@@ -15,3 +15,10 @@
 2. You will see a QR Code in terminal
 3. Scan the QR code with your phone camera
 4. Then Sportify will run on your phone via Expo Go
+
+## Useful Resources
+React Native: How to create a new project https://reactnative.dev/docs/environment-setup?guide=quickstart 
+
+React Native: Starting guide https://reactnative.dev/docs/tutorial
+
+React Native: Documentations https://reactnative.dev/docs/view, etc
