@@ -8,6 +8,7 @@
 1. Clone the repo: Sportify-Frontend
 2. Open the directory of Sportify-Frontend
 3. Run "npm install" in terminal
+4. Run "npm -v", if you can see the version number, then the installation was successful
 
 ## Execution
 1. Run "npm start
