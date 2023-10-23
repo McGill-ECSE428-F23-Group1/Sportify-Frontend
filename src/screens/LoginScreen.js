@@ -12,56 +12,56 @@ const LoginScreen = () => {
   
 
     return(
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <SafeAreaView style={styles.container}>
-                <View style={{flex: 1}}></View>
-                <View style={styles.title_container}>
-                    <Text style={fonts.app_title}>SPORTIFY</Text>
-                </View>
-                <View style={styles.textboxes_container}>
-                <View style={[styles.textbox_container,{marginTop: 16}]}>
-                        <View style={styles.textbox_title_container}>
-                            <Text style={fonts.textbox_title}>USERNAME</Text>
-                        </View>
-                        <View style={styles.textbox_content_container}>
-                            <TextInput 
-                                style={[fonts.textbox_input, {flex:1, marginHorizontal:4, marginTop:1}]}
-                                onChangeText={onChangeUsername}
-                                value={username}
-                                placeholder={"4 to 12 characters"}
-                                autoCapitalize={'none'}
-                                autoCorrect={false}
-                                spellCheck={false}
-                            />
-                        </View>
+        <SafeAreaView style={styles.container}>
+            <View style={{flex: 1}}></View>
+            <View style={styles.title_container}>
+                <Text style={fonts.app_title}>SPORTIFY</Text>
+            </View>
+            <View style={styles.textboxes_container}>
+            <View style={[styles.textbox_container,{marginTop: 16}]}>
+                    <View style={styles.textbox_title_container}>
+                        <Text style={fonts.textbox_title}>USERNAME</Text>
                     </View>
-                    <View style={styles.textbox_container}>
-                        <View style={styles.textbox_title_container}>
-                            <Text style={fonts.textbox_title}>PASSWORD</Text>
-                        </View>
-                        <View style={styles.textbox_content_container}>
-                            <TextInput 
-                                style={[fonts.textbox_input, {flex:1, marginHorizontal:4, marginTop:1}]}
-                                onChangeText={onChangePassword}
-                                value={password}
-                                placeholder={"8 to 12 characters"}
-                                autoCapitalize={'none'}
-                                autoCorrect={false}
-                                spellCheck={false}
-                            />
-                        </View>
+                    <View style={styles.textbox_content_container}>
+                        <TextInput 
+                            id="username-text-input"
+                            style={[fonts.textbox_input, {flex:1, marginHorizontal:4, marginTop:1}]}
+                            onChangeText={onChangeUsername}
+                            value={username}
+                            placeholder={"4 to 12 characters"}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            spellCheck={false}
+                        />
                     </View>
                 </View>
-                <View style={styles.buttons_container}>
-                    <View style={styles.button}>
-                        <AppButton title="LOGIN" onPress={()=>{console.log("LOGIN "+username+"-"+password)}}/>
+                <View style={styles.textbox_container}>
+                    <View style={styles.textbox_title_container}>
+                        <Text style={fonts.textbox_title}>PASSWORD</Text>
                     </View>
-                    <View style={[styles.button]}>
-                        <AppButton title="REGISTER" onPress={()=>{console.log("REGISTER "+username+"-"+password)}}/>
+                    <View style={styles.textbox_content_container}>
+                        <TextInput 
+                            id="password-text-input"
+                            style={[fonts.textbox_input, {flex:1, marginHorizontal:4, marginTop:1}]}
+                            onChangeText={onChangePassword}
+                            value={password}
+                            placeholder={"8 to 12 characters"}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            spellCheck={false}
+                        />
                     </View>
                 </View>
-            </SafeAreaView>
-        </TouchableWithoutFeedback>
+            </View>
+            <View style={styles.buttons_container}>
+                <View style={styles.button}>
+                    <AppButton id="login-button" title="LOGIN" onPress={()=>{console.log("LOGIN "+username+"-"+password)}}/>
+                </View>
+                <View style={[styles.button]}>
+                    <AppButton id="register-button" title="REGISTER" onPress={()=>{console.log("REGISTER "+username+"-"+password)}}/>
+                </View>
+            </View>
+        </SafeAreaView>
     );
     };
 

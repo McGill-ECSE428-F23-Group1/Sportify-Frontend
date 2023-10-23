@@ -1,20 +1,31 @@
 # Sportify-Frontend
 
 ## Prequisites
-1. Installing Node.js on laptop
-2. Downloading Expo Go on phone
+1. Install Node.js on your computer
+2. Download Expo Go on your phone
 
-## Setups
-1. Clone the repo: Sportify-Frontend
-2. Open the directory of Sportify-Frontend
-3. Run "npm install" in terminal
-4. Run "npm -v", if you can see the version number, then the installation was successful
+## Setup
+1. Clone the current repository Sportify-Frontend
+2. Enter the directory of Sportify-Frontend
+3. Run `npm install` in terminal
+4. Run `npm -v`, if you can see the version number, then the installation was successful
 
 ## Execution
-1. Run "npm start
+1. Run `npm start`
+
+### On Your Computer's Web Browser
+2. Visit http://localhost:19006 from a browser
+
+### On Your Phone
 2. You will see a QR Code in terminal
-3. Scan the QR code with your phone camera
-4. Then Sportify will run on your phone via Expo Go
+3. Scan the QR code with your phone's camera
+4. Sportify will run on your phone via Expo Go
+
+## Acceptance Testing with Cucumber
+
+1. Run the backend
+2. Run the frontend: `npm start`
+3. Run `npm test`
 
 ## Useful Resources
 React Native: How to create a new project https://reactnative.dev/docs/environment-setup?guide=quickstart 

@@ -7,7 +7,7 @@ import MainProfile from './src/screens/MainProfile';
 export default function App() {
   return (
     <View style={{flex:1}}>
-      <MainProfile/>
+      <LoginScreen/>
     </View>
   );
 }
