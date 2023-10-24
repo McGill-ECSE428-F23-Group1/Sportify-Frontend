@@ -1,21 +1,28 @@
 const { Given, When, Then } = require("cucumber");
 const assert = require('assert');
 const { By } = require('selenium-webdriver');
+const { frontendBaseUrl, createUser, getUser, deleteUser } = require('./utils');
 
 Given(/^the user is at the login\/signup page$/, async function () {
-    await this.driver.get('http://localhost:19006');
+    await this.driver.get(frontendBaseUrl);
 });
 
 Given(/^there exists a user with username (.*(?<!and password .*)$)$/, async function (username) {
-    // TODO
+    await deleteUser(username);
+    const response = await createUser(username, username);
+    assert(response.status == 200);
 });
 
 Given(/^there exists a user with username (.*) and password (.*)$/, async function (username, password) {
-    // TODO
+    await deleteUser(username);
+    const response = await createUser(username, password);
+    assert(response.status == 200);
 });
 
 Given(/^there does not exist a user with username (.*)$/, async function (username) {
-    // TODO
+    await deleteUser(username);
+    const response = await getUser(username);
+    assert(response.status != 200);
 });
 
 When(/^the user enters username (.*) and password (.*)$/, async function (username, password) {
