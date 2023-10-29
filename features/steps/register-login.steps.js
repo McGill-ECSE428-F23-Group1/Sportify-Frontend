@@ -9,7 +9,7 @@ Given(/^the user is at the login\/signup page$/, async function () {
 
 Given(/^there exists a user with username (.*(?<!and password .*)$)$/, async function (username) {
     await deleteUser(username);
-    const response = await createUser(username, username);
+    const response = await createUser(username, '12345678');
     assert(response.status == 200);
 });
 

@@ -29,9 +29,10 @@ When(/^the user confirms to delete account$/, async function () {
     await this.driver.switchTo().alert().accept();
 })
 
-Then(/^the account with username (.*) should be deleted successfully$/, async function (username, callback) {
+Then(/^the account with username (.*) should be deleted successfully$/, async function (username) {
     await this.driver.wait(until.alertIsPresent());
     assert(await this.driver.switchTo().alert().getText() == 'Account deleted successfully');
+    await this.driver.switchTo().alert().accept();
     const response = await getUser(username);
     assert(response.status != 200);
 })
@@ -40,7 +41,7 @@ When(/^the user cancels deleting account$/, async function () {
     await this.driver.switchTo().alert().dismiss();
 })
 
-Then(/^the account with username (.*) should be kept$/, async function (username, callback) {
+Then(/^the account with username (.*) should be kept$/, async function (username) {
     const response = await getUser(username);
     assert(response.status == 200);
 })
