@@ -6,7 +6,7 @@ import AppButton from '../components/AppButton';
 import { createUser, getUser, deleteUser } from '../../features/steps/utils';
 
 
-const LoginScreen = () => {
+const LoginScreen = ({route, navigation}) => {
 
     const [username, onChangeUsername] = useState('');
     const [password, onChangePassword] = useState('');
@@ -23,7 +23,15 @@ const LoginScreen = () => {
         }else if(response.status>=200 || response.status<300){
             const this_password=(await response.json()).password;
             if(this_password==password){
-                //navigate
+                navigation.navigate("UserScreens",
+                    {
+                        screen: "Explore",
+                        params: {account_username: username},
+                    }
+                    
+                );
+            }else{
+                setMessage("Error: Wrong password");
             }
         }else{
             setMessage("Error code: "+response.status);

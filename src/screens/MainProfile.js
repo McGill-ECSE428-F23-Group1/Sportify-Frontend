@@ -10,7 +10,7 @@ import Image4 from '../components/profile.jpg'; // Replace with the actual path 
 const sports = ['Football', 'Basketball', 'Tennis', 'Swimming', 'Golf'];
 const proficiencyLevels = ['Beginner', 'Intermediate', 'Advanced'];
 
-const ProfilePage = () => {
+const MainProfile = () => {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('Male');
@@ -305,4 +305,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfilePage;
+export default MainProfile;

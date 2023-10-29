@@ -6,17 +6,16 @@ import AppButton from '../components/AppButton';
 import { createUser, getUser, deleteUser } from '../../features/steps/utils';
 
 
-const ExploreScreen = (route, navigation) => {
-    console.log(route);
+const FriendScreen = () => {
+
 
     return(
         <View style={styles.container}>
-            <View style={{flex: 1, backgroundColor: 'blue'}}>
-                <Text>userParam:{route.route.params.account_username}</Text>
-            </View>
+            <View style={{flex: 1, backgroundColor: 'red'}}>
 
-            <View style={{flex: 2, backgroundColor: 'white'}} />
-            <View style={{flex: 3, backgroundColor: 'yellow'}} />
+            </View>
+            <View style={{flex: 2, backgroundColor: 'darkorange'}} />
+            <View style={{flex: 3, backgroundColor: 'green'}} />
         </View>
     );
 };
@@ -28,4 +27,4 @@ const ExploreScreen = (route, navigation) => {
         },
     })
 
-export default ExploreScreen;
+export default FriendScreen;
