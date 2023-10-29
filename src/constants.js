@@ -16,6 +16,10 @@ export var fonts = StyleSheet.create({
         fontSize: 18,
         fontWeight: "600"
     },
+    message: {
+        fontSize: 13,
+        fontWeight: "400"
+    },
     textbox_input: {
         fontSize: 15,
         fontWeight: '400',

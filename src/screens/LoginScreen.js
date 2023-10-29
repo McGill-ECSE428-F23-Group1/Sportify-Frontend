@@ -10,35 +10,47 @@ const LoginScreen = () => {
 
     const [username, onChangeUsername] = useState('');
     const [password, onChangePassword] = useState('');
+    const [message, setMessage]=useState(' ');
 
-    const pressLogin = () => {
-        if(true){
-            //if account does not exist
-            loginUsernameError();
+    const pressLogin = async() => {
+        if(username==''){
+            setMessage("Error: Please enter username");
             return;
         }
-        if(true){
-            //if wrong password
-            loginPasswordError();
-            return;
+        const response = await getUser(username);
+        if(response.status==500){
+            setMessage("Error: This account does not exist");
+        }else if(response.status>=200 || response.status<300){
+            const this_password=(await response.json()).password;
+            if(this_password==password){
+                //navigate
+            }
+        }else{
+            setMessage("Error code: "+response.status);
         }
-        //then do the login and navigation
     };
 
     const pressRegister = async() => {
         if(username.length<4 || username.length>12){
-            registrationUsernameError();
+            setMessage("Error: Username must be 4 to 12 digits long");
             return;
         }
         if(password.length<8 || password.length>12){
-            registrationPasswordError();
+            setMessage("Error: Password must be 8 to 12 digits long");
             return;
         }
-        console.log("REGISTER "+username+"-"+password);
         const response = await getUser(username);
-        console.log(response);
-        //get user
-        //if doesnot exist, then allow registration
+        if(response.status==500){
+            const post_response=await createUser(username, password);
+            if(post_response.status>=200 || post_response.status<300){
+                setMessage("Successful Registration");
+            }
+        }else if(response.status>=200 || response.status<300){
+            setMessage("Error: This account already exists");
+        }else{
+            setMessage("Error code: "+response.status);
+        }
+
     };
 
     const registrationUsernameError = () =>{
@@ -49,29 +61,6 @@ const LoginScreen = () => {
         );
     }
 
-    const registrationPasswordError = () =>{
-        Alert.alert(
-            'Invalid Password', 
-            'Password must be 8 to 12 digits long', 
-            [{text: 'OK'},]
-        );
-    }
-
-    const registrationSuccessful = () =>{
-        Alert.alert(
-            'Successful Registration', 
-            '', 
-            [{text: 'OK'},]
-        );
-    }
-
-    const registrationFailed = () =>{
-        Alert.alert(
-            'Registeration Failed', 
-            '', 
-            [{text: 'OK'},]
-        );
-    }
 
     const loginUsernameError = () =>{
         Alert.alert(
@@ -102,14 +91,14 @@ const LoginScreen = () => {
     }
 
     return(
-        <TouchableWithoutFeedback style={styles.container} onPress={Keyboard.dismiss}>
+        <View style={styles.container} onPress={Keyboard.dismiss}>
             <View style={styles.container}>
                 <View style={{flex: 1}}></View>
                 <View style={styles.title_container}>
                     <Text style={fonts.app_title}>SPORTIFY</Text>
                 </View>
                 <View style={styles.textboxes_container}>
-                <View style={[styles.textbox_container,{marginTop: 16}]}>
+                    <View style={[styles.textbox_container,{marginTop: 16}]}>
                         <View style={styles.textbox_title_container}>
                             <Text style={fonts.textbox_title}>USERNAME</Text>
                         </View>
@@ -145,17 +134,20 @@ const LoginScreen = () => {
                             />
                         </View>
                     </View>
+                    <View style={styles.textbox_container}>
+                        <Text style={fonts.message}>{message}</Text>
+                    </View>
                 </View>
                 <View style={styles.buttons_container}>
                     <View style={styles.button}>
-                        <AppButton id="login-button" title="LOGIN" onPress={()=>{console.log("LOGIN "+username+"-"+password)}}/>
+                        <AppButton id="login-button" title="LOGIN" onPress={pressLogin}/>
                     </View>
                     <View style={[styles.button]}>
                         <AppButton id="register-button" title="REGISTER" onPress={pressRegister}/>
                     </View>
                 </View>
             </View>
-        </TouchableWithoutFeedback>
+        </View>
     );
     };
 
