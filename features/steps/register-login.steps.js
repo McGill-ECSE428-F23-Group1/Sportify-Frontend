@@ -45,7 +45,7 @@ Then(/^the registration should succeed$/, async function () {
 });
 
 Then(/^the user should be brought to the home page$/, async function () {
-    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'Explore')]")));
+    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'EXPLORE')]")));
 });
 
 Then(/^an error should appear showing that the username already exists$/, async function () {
