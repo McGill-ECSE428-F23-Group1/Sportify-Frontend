@@ -10,7 +10,14 @@ import Image4 from '../components/profile.jpg'; // Replace with the actual path 
 const sports = ['Football', 'Basketball', 'Tennis', 'Swimming', 'Golf'];
 const proficiencyLevels = ['Beginner', 'Intermediate', 'Advanced'];
 
-const MainProfile = () => {
+const MainProfile = ({route, navigation, 
+  accountUsername, setAccountUsername, 
+  accountPassword, setAccountPassword, 
+  accountGender, setAccountGender, 
+  accountEmail, setAccountEmail, 
+  accountAddress, setAccountAddress, 
+  accountFriends, setAccountFriends, 
+}) => {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('Male');
@@ -24,8 +31,11 @@ const MainProfile = () => {
   const toggleGenderModal = () => setGenderModalVisible(!isGenderModalVisible);
   const toggleSportsModal = () => setSportsModalVisible(!isSportsModalVisible);
 
+
+
   const handleSave = () => {
     // Implement the save functionality
+    // Update hookers from parent page
   };
 
   const handleLogout = () => {

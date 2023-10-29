@@ -26,7 +26,6 @@ const UserScreen = ({route, navigation}) => {
     const [message, setMessage]=useState(' ');
     const [stage, setStage]=useState("Explore");
 
-    //Initialization
     useEffect(() => {
         setUsername(route.params.account_username);
         const updateData = async () => {
@@ -77,7 +76,11 @@ const UserScreen = ({route, navigation}) => {
                 </View>
             </View>
             <View style={{flex: 1, display: stage=="Profile"? "flex":"none"}} >
-                <MainProfile/>
+                <MainProfile 
+                    accountUsername={username} setAccountUsername={setUsername} accountPassword={password} setAccountPassword={setPassword}
+                    accountGender={gender} setAccountGender={setGender} accountEmail={email} setAccountEmail={setEmail}
+                    accountAddress={address} setAccountAddress={setAddress} accountFriends={friends} setAccountFriends={setFriends}
+                />
             </View>
 
             <View style={styles.bottom_bar}>
