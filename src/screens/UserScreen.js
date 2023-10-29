@@ -43,7 +43,7 @@ const UserScreen = ({route, navigation}) => {
             }
         }
         updateData();
-    });
+    }, [stage]);
 
     const setStageToExplore=()=>{
         setStage("Explore");
