@@ -61,6 +61,10 @@ const UserScreen = ({route, navigation}) => {
         setStage("Profile");
     }
 
+    const logout=()=>{
+        navigation.pop();
+    }
+
     return (
         <View style={styles.container}>
             <View style={{flex: 1, display: stage=="Explore"? "flex":"none"}} >
@@ -80,6 +84,7 @@ const UserScreen = ({route, navigation}) => {
                     accountUsername={username} setAccountUsername={setUsername} accountPassword={password} setAccountPassword={setPassword}
                     accountGender={gender} setAccountGender={setGender} accountEmail={email} setAccountEmail={setEmail}
                     accountAddress={address} setAccountAddress={setAddress} accountFriends={friends} setAccountFriends={setFriends}
+                    accountLogout={logout}
                 />
             </View>
 

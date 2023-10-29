@@ -58,43 +58,6 @@ const LoginScreen = ({route, navigation}) => {
 
     };
 
-    const registrationUsernameError = () =>{
-        Alert.alert(
-            'Invalid Username', 
-            'Username must be 4 to 12 digits long', 
-            [{text: 'OK'},]
-        );
-    }
-
-
-    const loginUsernameError = () =>{
-        Alert.alert(
-            'Invalid Username', 
-            'This account does not exist', 
-            [{text: 'OK'},]
-        );
-    }
-
-    const loginPasswordError = () =>{
-        Alert.alert(
-            'Wrong Password', 
-            '', 
-            [{text: 'OK'},]
-        );
-    }
-
-    const loginSuccessful = () =>{
-        //navigation
-    }
-
-    const loginFailed = () =>{
-        Alert.alert(
-            'Login Failed', 
-            '', 
-            [{text: 'OK'},]
-        );
-    }
-
     return(
         <View style={styles.container} onPress={Keyboard.dismiss}>
             <View style={styles.container}>

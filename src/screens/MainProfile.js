@@ -16,7 +16,7 @@ const MainProfile = ({route, navigation,
   accountGender, setAccountGender, 
   accountEmail, setAccountEmail, 
   accountAddress, setAccountAddress, 
-  accountFriends, setAccountFriends, 
+  accountFriends, setAccountFriends, accountLogout
 }) => {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
@@ -36,10 +36,6 @@ const MainProfile = ({route, navigation,
   const handleSave = () => {
     // Implement the save functionality
     // Update hookers from parent page
-  };
-
-  const handleLogout = () => {
-    // Implement the logout functionality
   };
 
   const handleDelete = () => {
@@ -181,7 +177,7 @@ const MainProfile = ({route, navigation,
       </TouchableOpacity>
 
       <View style={styles.buttonGroup}>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <TouchableOpacity style={styles.logoutButton} onPress={accountLogout}>
           <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
