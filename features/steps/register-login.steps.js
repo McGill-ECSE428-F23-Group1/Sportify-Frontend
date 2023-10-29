@@ -1,6 +1,6 @@
 const { Given, When, Then } = require("cucumber");
 const assert = require('assert');
-const { By } = require('selenium-webdriver');
+const { By, until } = require('selenium-webdriver');
 const { frontendBaseUrl, createUser, getUser, deleteUser } = require('./utils');
 
 Given(/^the user is at the login\/signup page$/, async function () {
@@ -40,18 +40,22 @@ When(/^the user presses the \"Log In\" button$/, async function () {
     await this.driver.executeScript('arguments[0].click();', loginButton);
 });
 
+Then(/^the registration should succeed$/, async function () {
+    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'Successful Registration')]")));
+});
+
 Then(/^the user should be brought to the home page$/, async function () {
-    // TODO
+    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'Explore')]")));
 });
 
 Then(/^an error should appear showing that the username already exists$/, async function () {
-    // TODO
+    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'This account already exists')]")));
 });
 
 Then(/^an error should appear showing that the username does not exist$/, async function () {
-    // TODO
+    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'This account does not exist')]")));
 });
 
 Then(/^an error should appear showing that the password is incorrect$/, async function () {
-    // TODO
+    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'Wrong password')]")));
 });

@@ -14,8 +14,8 @@ Then the user should be brought to the home page
 
 Examples:
 | username | password |
-| Zhekai   | Zhekai   |
-| Yicheng  | Yicheng  |
+| Zhekai   | Zhekai78 |
+| Yicheng  | Yicheng8 |
 
 Scenario Outline: Log in with nonexistent username (Error flow)
 
@@ -27,8 +27,8 @@ Then an error should appear showing that the username does not exist
 
 Examples:
 | username | password |
-| Shaun    | Shaun    |
-| Krishna  | Krishna  |
+| Shaun    | Shaun678 |
+| Krishna  | Krishna8 |
 
 Scenario Outline: Log in with existent username and incorrect password (Error flow)
 
@@ -40,5 +40,5 @@ Then an error should appear showing that the password is incorrect
 
 Examples:
 | username | password | incorrectPassword |
-| Weiheng  | Weiheng  | weiheng           |
-| Jimmy    | Jimmy    | jimmy             |
+| Weiheng  | Weiheng8 | weiheng           |
+| Jimmy    | Jimmy678 | jimmy             |
