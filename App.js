@@ -10,6 +10,7 @@ import MainProfile from './src/screens/MainProfile';
 import FriendsScreen from './src/screens/FriendsScreen';
 import ExploreScreen from './src/screens/ExploreScreen';
 import ChatScreen from './src/screens/ChatScreen';
+import UserScreen from './src/screens/UserScreen';
 
 
 export default function App() {
@@ -33,7 +34,7 @@ export default function App() {
             <NavigationContainer>
                 <OnBoardingStack.Navigator initialRouteName='OnBoard'>
                     <OnBoardingStack.Screen name="OnBoard" component={LoginScreen} options={{ headerShown: false }}/>
-                    <OnBoardingStack.Screen name="UserScreens" component={UserScreens}  options={{ headerShown: false }}/>
+                    <OnBoardingStack.Screen name="UserScreen" component={UserScreen}  options={{ headerShown: false }}/>
                 </OnBoardingStack.Navigator>
             </NavigationContainer>
         </View>

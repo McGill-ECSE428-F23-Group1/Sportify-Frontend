@@ -11,10 +11,7 @@ const ExploreScreen = (route, navigation) => {
 
     return(
         <View style={styles.container}>
-            <View style={{flex: 1, backgroundColor: 'blue'}}>
-                <Text>userParam:{route.route.params.account_username}</Text>
-            </View>
-
+            <View style={{flex: 1, backgroundColor: 'blue'}} />
             <View style={{flex: 2, backgroundColor: 'white'}} />
             <View style={{flex: 3, backgroundColor: 'yellow'}} />
         </View>

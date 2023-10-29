@@ -23,13 +23,10 @@ const LoginScreen = ({route, navigation}) => {
         }else if(response.status>=200 || response.status<300){
             const this_password=(await response.json()).password;
             if(this_password==password){
-                navigation.navigate("UserScreens",
-                    {
-                        screen: "Explore",
-                        params: {account_username: username},
-                    }
-                    
-                );
+                navigation.navigate({
+                    name:"UserScreen",
+                    params: { account_username: username },
+                });
             }else{
                 setMessage("Error: Wrong password");
             }
