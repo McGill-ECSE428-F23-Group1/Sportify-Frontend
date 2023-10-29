@@ -81,6 +81,7 @@ const UserScreen = ({route, navigation}) => {
             </View>
             <View style={{flex: 1, display: stage=="Profile"? "flex":"none"}} >
                 <MainProfile 
+                    route={route} navigation={navigation}
                     accountUsername={username} setAccountUsername={setUsername} accountPassword={password} setAccountPassword={setPassword}
                     accountGender={gender} setAccountGender={setGender} accountEmail={email} setAccountEmail={setEmail}
                     accountAddress={address} setAccountAddress={setAddress} accountFriends={friends} setAccountFriends={setFriends}

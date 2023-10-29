@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Switch, TouchableOpacity, StyleSheet, Modal, FlatList } from 'react-native';
-import { Image } from 'react-native';
-
-import Image1 from '../components/explore.png'; // Replace with the actual path to your image
-import Image2 from '../components/friends.jpg'; // Replace with the actual path to your image'
-import Image3 from '../components/chat.jpg'; // Replace with the actual path to your image
-import Image4 from '../components/profile.jpg'; // Replace with the actual path to your image
+import { createUser, getUser, deleteUser } from '../../features/steps/utils';
 
 const sports = ['Football', 'Basketball', 'Tennis', 'Swimming', 'Golf'];
 const proficiencyLevels = ['Beginner', 'Intermediate', 'Advanced'];
@@ -18,7 +13,7 @@ const MainProfile = ({route, navigation,
   accountAddress, setAccountAddress, 
   accountFriends, setAccountFriends, accountLogout
 }) => {
-  const [nickname, setNickname] = useState('');
+  const [username, setUsername] = useState(accountUsername);
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('Male');
   const [privateMode, setPrivateMode] = useState(false);
@@ -31,7 +26,14 @@ const MainProfile = ({route, navigation,
   const toggleGenderModal = () => setGenderModalVisible(!isGenderModalVisible);
   const toggleSportsModal = () => setSportsModalVisible(!isSportsModalVisible);
 
-
+  getUser(accountUsername)
+  .then(response => response.json())
+  .then(profile => {
+    setUsername(profile.username);
+    setPassword(profile.password);
+    setGender(profile.gender);
+  })
+  .catch(e => console.log(e))
 
   const handleSave = () => {
     // Implement the save functionality
@@ -39,7 +41,17 @@ const MainProfile = ({route, navigation,
   };
 
   const handleDelete = () => {
-    // Implement the delete functionality
+    if (confirm('Are you sure you want to delete your account? This cannot be undone!')) {
+      deleteUser(accountUsername)
+      .then(() => {
+        alert('Account deleted successfully')
+        navigation.navigate("OnBoard", {
+          screen: "OnBoard",
+          params: {},
+        });
+      })
+      .catch(e => console.log(e))
+    }
   };
 
   const renderGenderModal = () => (
@@ -118,15 +130,15 @@ const MainProfile = ({route, navigation,
 
       <Text style={styles.header}>Profile</Text>
       <View style={styles.usernameContainer}>
-        <Text style={styles.username}>user001</Text>
+        <Text style={styles.username}>{username}</Text>
       </View>
 
       <View style={styles.inputContainer}>
-        <Text>Nickname:</Text>
+        <Text>Username:</Text>
         <TextInput
           style={styles.textInput}
-          value={nickname}
-          onChangeText={(text) => setNickname(text)}
+          value={username}
+          onChangeText={(text) => setUsername(text)}
         />
       </View>
 
@@ -181,15 +193,8 @@ const MainProfile = ({route, navigation,
           <Text style={styles.buttonText}>Logout</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-          <Text style={styles.buttonText}>Delete</Text>
+          <Text style={styles.buttonText}>Delete Account</Text>
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.imageButtons}>
-        <Image source={Image1} style={styles.image} />
-        <Image source={Image2} style={styles.image} />
-        <Image source={Image3} style={styles.image} />
-        <Image source={Image4} style={styles.image} />
       </View>
     </View>
   );
