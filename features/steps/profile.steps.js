@@ -1,7 +1,7 @@
 const { Given, When, Then } = require("cucumber");
 const assert = require('assert');
 const { By, until } = require('selenium-webdriver');
-const { frontendBaseUrl, createUser, getUser, deleteUser } = require('./utils');
+const { frontendBaseUrl, createUser, getUser, updateBasicProfile, deleteUser } = require('./utils');
 
 Given(/^the user is at the profile page$/, async function () {
     let profileButton = await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'PROFILE')]")));
@@ -10,9 +10,11 @@ Given(/^the user is at the profile page$/, async function () {
 
 Given(/^a user with username (.*), gender (.*), and sports (.*) is logged in$/, async function (username, gender, sports) {
     await deleteUser(username);
-    const response = await createUser(username, '12345678');
-    assert(response.status == 200);
-    // TODO: Gender, sports
+    const createResponse = await createUser(username, '12345678');
+    assert(createResponse.status == 200);
+    const updateResponse = await updateBasicProfile(username, '12345678', gender.toUpperCase());
+    assert(updateResponse.status == 200);
+    // TODO: sports
     await this.driver.get(frontendBaseUrl);
     await this.driver.findElement(By.id('username-text-input')).sendKeys(username);
     await this.driver.findElement(By.id('password-text-input')).sendKeys('12345678');
@@ -46,6 +48,11 @@ When(/^the user confirms to delete account$/, async function () {
     await this.driver.switchTo().alert().accept();
 })
 
+When(/^the user cancels deleting account$/, async function () {
+    await this.driver.wait(until.alertIsPresent());
+    await this.driver.switchTo().alert().dismiss();
+})
+
 Then(/^the page should show the username (.*), gender (.*), and sports (.*)$/, async function (username, gender, sports) {
     // TODO
 })
@@ -60,11 +67,6 @@ Then(/^the account with username (.*) should be deleted successfully$/, async fu
     await this.driver.switchTo().alert().accept();
     const response = await getUser(username);
     assert(response.status != 200);
-})
-
-When(/^the user cancels deleting account$/, async function () {
-    await this.driver.wait(until.alertIsPresent());
-    await this.driver.switchTo().alert().dismiss();
 })
 
 Then(/^the account with username (.*) should be kept$/, async function (username) {
