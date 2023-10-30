@@ -8,25 +8,11 @@ Scenario Outline: Edit account information (Normal flow)
 
 Given the user with username <username> is logged in
 And   the user is at the profile page
-When the user updates username to <newUsername>, password to <password>, gender to <gender>, and sports to <sports>
+When the user updates password to <password>, gender to <gender>, and sports to <sports>
 And  the user presses on the "Save" button
-Then the information should be updated successfully
+Then the user with username <username> should have password <password>, gender <gender>, and sports <sports>
 
 Examples:
-| username | newUsername | password | gender | sports                              |
-| Chenxin  | ChenXin     | chenXin8 | Male   | Soccer:Proficient                   |
-| Neel     | Neel        | neel5678 | Male   | Soccer:Intermediate,Soccer:Beginner |
-
-Scenario Outline: Edit account information with existing username (Error flow)
-
-Given the user with username <username> is logged in
-And   the user is at the profile page
-And   there exists another user with username <newUsername>
-When the user updates username to <newUsername>, password to <password>, gender to <gender>, and sports to <sports>
-And  the user presses on the "Save" button
-Then an error should appear showing that the username already exists
-
-Examples:
-| username | newUsername | password | gender | sports                              |
-| Chenxin  | Neel        | chenXin8 | Male   | Soccer:Proficient                   |
-| Neel     | Ze Yuan     | zeyuan78 | Male   | Soccer:Intermediate,Soccer:Beginner |
+| username | password | gender | sports                              |
+| Chenxin  | chenXin8 | Male   | Soccer:Proficient                   |
+| Neel     | neel5678 | Male   | Soccer:Intermediate,Soccer:Beginner |

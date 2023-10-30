@@ -23,13 +23,7 @@ Given(/^a user with username (.*), gender (.*), and sports (.*) is logged in$/, 
     await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'EXPLORE')]")));
 })
 
-Given(/^there exists another user with username (.*)$/, async function (username) {
-    await deleteUser(username);
-    const response = await createUser(username, '12345678');
-    assert(response.status == 200);
-})
-
-When(/^the user updates username to (.*), password to (.*), gender to (.*), and sports to (.*)$/, async function (username, password, gender, sports) {
+When(/^the user updates password to (.*), gender to (.*), and sports to (.*)$/, async function (password, gender, sports) {
     // TODO
 })
 
@@ -57,7 +51,7 @@ Then(/^the page should show the username (.*), gender (.*), and sports (.*)$/, a
     // TODO
 })
 
-Then(/^the information should be updated successfully$/, async function () {
+Then(/^the user with username (.*) should have password (.*), gender (.*), and sports (.*)$/, async function (username, password, gender, sports) {
     // TODO
 })
 
