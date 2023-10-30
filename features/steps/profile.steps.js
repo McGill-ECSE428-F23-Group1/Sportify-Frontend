@@ -1,18 +1,7 @@
 const { Given, When, Then } = require("cucumber");
 const assert = require('assert');
 const { By, until } = require('selenium-webdriver');
-const { frontendBaseUrl, createUser, getUser, deleteUser } = require('./utils');
-
-Given(/^the user with username (.*) is logged in$/, async function (username) {
-    await this.driver.get(frontendBaseUrl);
-    await deleteUser(username);
-    await createUser(username, '12345678');
-    await this.driver.findElement(By.id('username-text-input')).sendKeys(username);
-    await this.driver.findElement(By.id('password-text-input')).sendKeys('12345678');
-    let loginButton = await this.driver.findElement(By.id('login-button'));
-    await this.driver.executeScript('arguments[0].click();', loginButton);
-    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'EXPLORE')]")));
-});
+const { getUser } = require('./utils');
 
 Given(/^the user is at the profile page$/, async function () {
     let profileButton = await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'PROFILE')]")));
@@ -38,6 +27,7 @@ Then(/^the account with username (.*) should be deleted successfully$/, async fu
 })
 
 When(/^the user cancels deleting account$/, async function () {
+    await this.driver.wait(until.alertIsPresent());
     await this.driver.switchTo().alert().dismiss();
 })
 
