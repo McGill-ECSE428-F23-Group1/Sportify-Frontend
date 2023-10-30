@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, TextInput, Switch, TouchableOpacity, StyleSheet, Modal, FlatList } from 'react-native';
-import { createUser, getUser, deleteUser } from '../../features/steps/utils';
+import { updateBasicProfile, getUser, deleteUser } from '../../features/steps/utils';
+import { Picker } from '@react-native-picker/picker';
 
 const sports = ['Football', 'Basketball', 'Tennis', 'Swimming', 'Golf'];
 const proficiencyLevels = ['Beginner', 'Intermediate', 'Advanced'];
@@ -15,7 +16,7 @@ const MainProfile = ({route, navigation,
 }) => {
   const [username, setUsername] = useState(accountUsername);
   const [password, setPassword] = useState('');
-  const [gender, setGender] = useState('Male');
+  const [gender, setGender] = useState('MALE');
   const [privateMode, setPrivateMode] = useState(false);
   const [selectedSport, setSelectedSport] = useState(null);
   const [selectedProficiency, setSelectedProficiency] = useState(null);
@@ -26,21 +27,29 @@ const MainProfile = ({route, navigation,
   const toggleGenderModal = () => setGenderModalVisible(!isGenderModalVisible);
   const toggleSportsModal = () => setSportsModalVisible(!isSportsModalVisible);
 
-  getUser(accountUsername)
-  .then(response => response.json())
-  .then(profile => {
-    setUsername(profile.username);
-    setPassword(profile.password);
-    setGender(profile.gender);
-  })
-  .catch(e => console.log(e))
+  useEffect(() => {
+    if (accountUsername != '') {
+      setUsername(accountUsername);
+      getUser(accountUsername)
+      .then(response => response.json())
+      .then(profile => {
+        setUsername(profile.username);
+        setPassword(profile.password);
+        setGender(profile.gender || 'MALE');
+      })
+      .catch(e => console.log(e))
+    }
+  }, [accountUsername]);
 
-  const handleSave = () => {
+  const handleSave = useCallback(async () => {
     // Implement the save functionality
     // Update hookers from parent page
-  };
+    updateBasicProfile(username, password, gender)
+    .then(r => r.json())
+    alert('Success');
+  }, [username, password, gender]);
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     if (confirm('Are you sure you want to delete your account? This cannot be undone!')) {
       deleteUser(accountUsername)
       .then(() => {
@@ -52,120 +61,121 @@ const MainProfile = ({route, navigation,
       })
       .catch(e => console.log(e))
     }
-  };
+  }, [accountUsername]);
 
-  const renderGenderModal = () => (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isGenderModalVisible}
-    >
-      {/* ... (no changes in this part) */}
-    </Modal>
-  );
+  // const renderGenderModal = () => (
+  //   <Modal
+  //     animationType="slide"
+  //     transparent={true}
+  //     visible={isGenderModalVisible}
+  //   >
+  //     {/* ... (no changes in this part) */}
+  //   </Modal>
+  // );
 
-  const renderSportsModal = () => (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isSportsModalVisible}
-    >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalHeader}>Select Sport</Text>
-          <FlatList
-            data={sports}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.modalItem}
-                onPress={() => {
-                  setSelectedSport(item);
-                  toggleSportsModal();
-                }}
-              >
-                <Text>{item}</Text>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      </View>
-    </Modal>
-  );
+  // const renderSportsModal = () => (
+  //   <Modal
+  //     animationType="slide"
+  //     transparent={true}
+  //     visible={isSportsModalVisible}
+  //   >
+  //     <View style={styles.modalContainer}>
+  //       <View style={styles.modalContent}>
+  //         <Text style={styles.modalHeader}>Select Sport</Text>
+  //         <FlatList
+  //           data={sports}
+  //           keyExtractor={(item) => item}
+  //           renderItem={({ item }) => (
+  //             <TouchableOpacity
+  //               style={styles.modalItem}
+  //               onPress={() => {
+  //                 setSelectedSport(item);
+  //                 toggleSportsModal();
+  //               }}
+  //             >
+  //               <Text>{item}</Text>
+  //             </TouchableOpacity>
+  //           )}
+  //         />
+  //       </View>
+  //     </View>
+  //   </Modal>
+  // );
 
-  const renderProficiencyModal = () => (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isSportsModalVisible}
-    >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalHeader}>Select Proficiency Level</Text>
-          <FlatList
-            data={proficiencyLevels}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.modalItem}
-                onPress={() => {
-                  setSelectedProficiency(item);
-                  toggleSportsModal();
-                }}
-              >
-                <Text>{item}</Text>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      </View>
-    </Modal>
-  );
+  // const renderProficiencyModal = () => (
+  //   <Modal
+  //     animationType="slide"
+  //     transparent={true}
+  //     visible={isSportsModalVisible}
+  //   >
+  //     <View style={styles.modalContainer}>
+  //       <View style={styles.modalContent}>
+  //         <Text style={styles.modalHeader}>Select Proficiency Level</Text>
+  //         <FlatList
+  //           data={proficiencyLevels}
+  //           keyExtractor={(item) => item}
+  //           renderItem={({ item }) => (
+  //             <TouchableOpacity
+  //               style={styles.modalItem}
+  //               onPress={() => {
+  //                 setSelectedProficiency(item);
+  //                 toggleSportsModal();
+  //               }}
+  //             >
+  //               <Text>{item}</Text>
+  //             </TouchableOpacity>
+  //           )}
+  //         />
+  //       </View>
+  //     </View>
+  //   </Modal>
+  // );
 
   return (
     <View style={styles.container}>
-      {renderGenderModal()}
+      {/* {renderGenderModal()}
       {renderSportsModal()}
-      {renderProficiencyModal()}
+      {renderProficiencyModal()} */}
 
       <Text style={styles.header}>Profile</Text>
       <View style={styles.usernameContainer}>
-        <Text style={styles.username}>{username}</Text>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text>Username:</Text>
-        <TextInput
-          style={styles.textInput}
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-        />
+        <Text id='username-text' style={styles.username}>{username}</Text>
       </View>
 
       <View style={styles.inputContainer}>
         <Text>Password:</Text>
         <TextInput
+          id='password-update-text-input'
           style={styles.textInput}
           secureTextEntry={true}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
+          defaultValue={password}
+          onChangeText={setPassword}
         />
       </View>
 
       <View style={styles.inputContainer}>
         <Text>Gender:</Text>
-        <TouchableOpacity style={styles.genderButton} onPress={toggleGenderModal}>
+        <Picker
+          id='gender-picker'
+          onValueChange={(text) => setGender(text)}
+          selectedValue={gender}
+        >
+          <Picker.Item label="Male" value="MALE" />
+          <Picker.Item label="Female" value="FEMALE" />
+          <Picker.Item label="Other" value="OTHER" />
+        </Picker>
+        {/* <TouchableOpacity style={styles.genderButton} onPress={toggleGenderModal}>
           <Text style={{ color: 'white' }}>{gender}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
-      <View style={styles.inputContainer}>
+      {/* <View style={styles.inputContainer}>
         <Text>Private Mode:</Text>
         <Switch
           value={privateMode}
           onValueChange={(value) => setPrivateMode(value)}
         />
-      </View>
+      </View> */}
 
       <Text style={styles.label}>Sports:</Text>
       <View style={styles.sportsContainer}>

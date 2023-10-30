@@ -43,7 +43,7 @@ const UserScreen = ({route, navigation}) => {
             }
         }
         updateData();
-    });
+    }, [route.params.account_username]);
 
     const setStageToExplore=()=>{
         setStage("Explore");
