@@ -3,8 +3,8 @@ import { View, Text, TextInput, Switch, TouchableOpacity, StyleSheet, Modal, Fla
 import { updateBasicProfile, getUser, deleteUser } from '../../features/steps/utils';
 import { Picker } from '@react-native-picker/picker';
 
-const sports = ['Football', 'Basketball', 'Tennis', 'Swimming', 'Golf'];
-const proficiencyLevels = ['Beginner', 'Intermediate', 'Advanced'];
+const sportOptions = ['Football', 'Basketball', 'Tennis', 'Swimming', 'Golf'];
+const proficiencyLevelOptions = ['Beginner', 'Intermediate', 'Advanced'];
 
 const MainProfile = ({route, navigation, 
   accountUsername, setAccountUsername, 
@@ -18,6 +18,7 @@ const MainProfile = ({route, navigation,
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('MALE');
   const [privateMode, setPrivateMode] = useState(false);
+  const [sports, setSports] = useState([]);
   const [selectedSport, setSelectedSport] = useState(null);
   const [selectedProficiency, setSelectedProficiency] = useState(null);
 
@@ -36,6 +37,7 @@ const MainProfile = ({route, navigation,
         setUsername(profile.username);
         setPassword(profile.password);
         setGender(profile.gender || 'MALE');
+        setSports(profile.sports);
       })
       .catch(e => console.log(e))
     }
@@ -178,7 +180,32 @@ const MainProfile = ({route, navigation,
       </View> */}
 
       <Text style={styles.label}>Sports:</Text>
-      <View style={styles.sportsContainer}>
+      {sports.map((sport, i) => (
+        <View style={styles.sportsContainer}>
+          <Picker
+            id={'profile-sport-name-picker-' + sport.sportName}
+            onValueChange={(text) => {
+              sports[i].sportName = text;
+              setSports(sport.slice());
+            }}
+            selectedValue={sport.sportName}
+          >
+            {sportOptions.map(sportOption => (<Picker.Item label={sportOption} value={sportOption} />))}
+          </Picker>
+
+          <Picker
+            id={'profile-sport-level-picker-' + sport.sportName}
+            onValueChange={(text) => {
+              sports[i].sportLevel = text;
+              setSports(sport.slice());
+            }}
+            selectedValue={sport.sportLevel}
+          >
+            {proficiencyLevelOptions.map(levelOption => (<Picker.Item label={levelOption} value={levelOption.toUpperCase()} />))}
+          </Picker>
+        </View>
+      ))}
+      {/* <View style={styles.sportsContainer}>
         <TouchableOpacity
           style={styles.sportDropdown}
           onPress={toggleSportsModal}
@@ -192,7 +219,7 @@ const MainProfile = ({route, navigation,
         >
           <Text style={{ color: 'white' }}>{selectedProficiency || 'Select Proficiency'}</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <TouchableOpacity style={styles.button} onPress={handleSave}>
         <Text style={styles.buttonText}>Save</Text>

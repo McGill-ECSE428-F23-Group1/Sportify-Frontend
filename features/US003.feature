@@ -12,5 +12,5 @@ Then the page should show the username <username>, gender <gender>, and sports <
 
 Examples:
 | username | gender | sports                                    |
-| Mia      | Female | Soccer:Intermediate,Tennis:Beginner       |
-| Irfan    | Male   | Soccer:Intermediate,Basketball:Proficient |
+| Mia      | Female | Football:Intermediate,Tennis:Beginner     |
+| Irfan    | Male   | Football:Intermediate,Basketball:Advanced |

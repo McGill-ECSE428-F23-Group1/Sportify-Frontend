@@ -13,4 +13,16 @@ const updateBasicProfile = async (username, password, gender) =>
     }), { method: 'PATCH' });
 const deleteUser = async username => await fetch(`${apiBaseUrl}/member/${username}`, { method: 'DELETE' });
 
-module.exports = { apiBaseUrl, frontendBaseUrl, createUser, updateBasicProfile, getUser, deleteUser };
+const addSportLevel = async (username, sport, level) =>
+    await fetch(`${apiBaseUrl}/membersport/${username}?` + new URLSearchParams({
+        sportName: sport,
+        sportLevel: level
+    }), { method: 'POST' });
+
+const getSportLevelPairsFromString = s =>
+    s.split(",").map(sportLevelPairAsString => {
+        const sportLevelPairAsArray = sportLevelPairAsString.split(":");
+        return { sportName: sportLevelPairAsArray[0], sportLevel: sportLevelPairAsArray[1] };
+    });
+
+module.exports = { apiBaseUrl, frontendBaseUrl, createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, getSportLevelPairsFromString };

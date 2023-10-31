@@ -1,7 +1,7 @@
 const { Given, When, Then } = require("cucumber");
 const assert = require('assert');
 const { By, until } = require('selenium-webdriver');
-const { frontendBaseUrl, createUser, getUser, updateBasicProfile, deleteUser } = require('./utils');
+const { frontendBaseUrl, createUser, getUser, updateBasicProfile, deleteUser, addSportLevel, getSportLevelPairsFromString } = require('./utils');
 
 Given(/^the user is at the profile page$/, async function () {
     let profileButton = await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'PROFILE')]")));
@@ -14,7 +14,9 @@ Given(/^a user with username (.*), gender (.*), and sports (.*) is logged in$/, 
     assert(createResponse.status == 200);
     const updateResponse = await updateBasicProfile(username, '12345678', gender.toUpperCase());
     assert(updateResponse.status == 200);
-    // TODO: Sports
+    getSportLevelPairsFromString(sports).forEach(async ({ sportName, sportLevel }) => {
+        addSportLevel(username, sportName, sportLevel.toUpperCase())
+    });
     await this.driver.get(frontendBaseUrl);
     await this.driver.findElement(By.id('username-text-input')).sendKeys(username);
     await this.driver.findElement(By.id('password-text-input')).sendKeys('12345678');
@@ -54,7 +56,11 @@ When(/^the user cancels deleting account$/, async function () {
 Then(/^the page should show the username (.*), gender (.*), and sports (.*)$/, async function (username, gender, sports) {
     assert((await this.driver.findElement(By.id('username-text')).getText()) == username);
     assert((await this.driver.findElement(By.id('gender-picker')).getAttribute("value")) == gender.toUpperCase());
-    // TODO: Sports
+    const expectedSportLevels = getSportLevelPairsFromString(sports);
+    await Promise.all(expectedSportLevels.map(async ({ sportName, sportLevel }) => {
+        assert((await this.driver.findElement(By.id('profile-sport-name-picker-' + sportName)).getAttribute('value')) == sportName);
+        assert((await this.driver.findElement(By.id('profile-sport-level-picker-' + sportName)).getAttribute('value')) == sportLevel.toUpperCase());
+    }));
 })
 
 Then(/^the user with username (.*) should have password (.*), gender (.*), and sports (.*)$/, async function (username, password, gender, sports) {
