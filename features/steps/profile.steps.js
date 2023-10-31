@@ -25,12 +25,19 @@ Given(/^a user with username (.*), gender (.*), and sports (.*) is logged in$/, 
     await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'EXPLORE')]")));
 })
 
-When(/^the user updates password to (.*), gender to (.*), and sports to (.*)$/, async function (password, gender, sports) {
+When(/^the user updates password to (.*), gender to (.*), and sports from (.*) to (.*)$/, async function (password, gender, oldSportsAsString, newSportsAsString) {
     const passwordInput = await this.driver.findElement(By.id('password-update-text-input'));
     passwordInput.clear();
     passwordInput.sendKeys(password);
     await this.driver.findElement(By.id('gender-picker')).sendKeys(gender.toUpperCase());
-    // TODO: Sports
+    const oldSportsAsList = getSportLevelPairsFromString(oldSportsAsString);
+    const newSportsAsList = getSportLevelPairsFromString(newSportsAsString);
+    const addSportButton = await this.driver.findElement(By.id('add-sport-button'));
+    await Promise.all(Array(Array(newSportsAsList.length - oldSportsAsList.length).keys()).map(async _ => await this.driver.executeScript('arguments[0].click();', addSportButton)));
+    await Promise.all(newSportsAsList.map(async (_, i) => {
+        await this.driver.findElement(By.id('profile-sport-name-picker-' + i)).sendKeys(newSportsAsList[i].sportName);
+        await this.driver.findElement(By.id('profile-sport-level-picker-' + i)).sendKeys(newSportsAsList[i].sportLevel.toUpperCase());
+    }));
 })
 
 When(/^the user presses on the \"Save\" button$/, async function () {
@@ -58,8 +65,10 @@ Then(/^the page should show the username (.*), gender (.*), and sports (.*)$/, a
     assert((await this.driver.findElement(By.id('gender-picker')).getAttribute("value")) == gender.toUpperCase());
     const expectedSportLevels = getSportLevelPairsFromString(sports);
     await Promise.all(expectedSportLevels.map(async ({ sportName, sportLevel }) => {
-        assert((await this.driver.findElement(By.id('profile-sport-name-picker-' + sportName)).getAttribute('value')) == sportName);
-        assert((await this.driver.findElement(By.id('profile-sport-level-picker-' + sportName)).getAttribute('value')) == sportLevel.toUpperCase());
+        await Promise.any(expectedSportLevels.map(async (_, i) => 
+            (await this.driver.findElement(By.id('profile-sport-name-picker-' + i)).getAttribute('value')) == sportName 
+                && (await this.driver.findElement(By.id('profile-sport-level-picker-' + i)).getAttribute('value')) == sportLevel.toUpperCase()
+        ));
     }));
 })
 
@@ -71,7 +80,9 @@ Then(/^the user with username (.*) should have password (.*), gender (.*), and s
     assert(profile.username == username);
     assert(profile.password == password);
     assert(profile.gender == gender.toUpperCase());
-    // TODO: Sports
+    await Promise.all(getSportLevelPairsFromString(sports).map(async ({ sportName, sportLevel }, i) => {
+        assert(profile.sports.find(sport => sport.sportName == sportName && sport.sportLevel == sportLevel.toUpperCase()));
+    }));
 })
 
 Then(/^the account with username (.*) should be deleted successfully$/, async function (username) {

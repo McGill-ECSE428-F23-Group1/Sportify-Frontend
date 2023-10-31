@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, TextInput, Switch, TouchableOpacity, StyleSheet, Modal, FlatList } from 'react-native';
-import { updateBasicProfile, getUser, deleteUser } from '../../features/steps/utils';
+import { updateBasicProfile, getUser, deleteUser, updateSportLevel, addSportLevel } from '../../features/steps/utils';
 import { Picker } from '@react-native-picker/picker';
 
 const sportOptions = ['Football', 'Basketball', 'Tennis', 'Swimming', 'Golf'];
@@ -18,6 +18,7 @@ const MainProfile = ({route, navigation,
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('MALE');
   const [privateMode, setPrivateMode] = useState(false);
+  const [oldSports, setOldSports] = useState([]);
   const [sports, setSports] = useState([]);
   const [selectedSport, setSelectedSport] = useState(null);
   const [selectedProficiency, setSelectedProficiency] = useState(null);
@@ -37,16 +38,29 @@ const MainProfile = ({route, navigation,
         setUsername(profile.username);
         setPassword(profile.password);
         setGender(profile.gender || 'MALE');
+        setOldSports(profile.sports);
         setSports(profile.sports);
       })
       .catch(e => console.log(e))
     }
   }, [accountUsername]);
 
+  const handleAdd = useCallback(() => {
+    sports.push({ sportName: '', sportLevel: '' });
+    setSports(sports.slice());
+  });
+
   const handleSave = useCallback(async () => {
     // Implement the save functionality
     // Update hookers from parent page
     await updateBasicProfile(username, password, gender);
+    await Promise.all(sports.map(async ({ sportName, sportLevel }, i) => {
+      if (i < oldSports.length) {
+        await updateSportLevel(username, sportName, sportLevel);
+      } else {
+        await addSportLevel(username, sportName, sportLevel);
+      }
+    }))
     alert('Success');
   }, [username, password, gender]);
 
@@ -182,7 +196,7 @@ const MainProfile = ({route, navigation,
       {sports.map((sport, i) => (
         <View style={styles.sportsContainer}>
           <Picker
-            id={'profile-sport-name-picker-' + sport.sportName}
+            id={'profile-sport-name-picker-' + i}
             onValueChange={(text) => {
               sports[i].sportName = text;
               setSports(sport.slice());
@@ -193,7 +207,7 @@ const MainProfile = ({route, navigation,
           </Picker>
 
           <Picker
-            id={'profile-sport-level-picker-' + sport.sportName}
+            id={'profile-sport-level-picker-' + i}
             onValueChange={(text) => {
               sports[i].sportLevel = text;
               setSports(sport.slice());
@@ -219,6 +233,10 @@ const MainProfile = ({route, navigation,
           <Text style={{ color: 'white' }}>{selectedProficiency || 'Select Proficiency'}</Text>
         </TouchableOpacity>
       </View> */}
+
+      <TouchableOpacity style={styles.button} onPress={handleAdd}>
+        <Text id='add-sport-button' style={styles.buttonText}>Add Sport</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={handleSave}>
         <Text style={styles.buttonText}>Save</Text>

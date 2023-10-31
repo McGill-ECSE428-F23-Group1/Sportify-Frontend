@@ -8,7 +8,7 @@ Scenario Outline: Edit account information (Normal flow)
 
 Given a user with username <username>, gender <gender>, and sports <sports> is logged in
 And   the user is at the profile page
-When the user updates password to <newPassword>, gender to <newGender>, and sports to <newSports>
+When the user updates password to <newPassword>, gender to <newGender>, and sports from <sports> to <newSports>
 And  the user presses on the "Save" button
 Then the user with username <username> should have password <newPassword>, gender <newGender>, and sports <newSports>
 
