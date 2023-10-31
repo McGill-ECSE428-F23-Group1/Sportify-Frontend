@@ -46,8 +46,7 @@ const MainProfile = ({route, navigation,
   const handleSave = useCallback(async () => {
     // Implement the save functionality
     // Update hookers from parent page
-    updateBasicProfile(username, password, gender)
-    .then(r => r.json())
+    await updateBasicProfile(username, password, gender);
     alert('Success');
   }, [username, password, gender]);
 

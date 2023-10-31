@@ -6,13 +6,13 @@ So that I can keep it up-to-date
 
 Scenario Outline: Edit account information (Normal flow)
 
-Given the user with username <username> is logged in
+Given a user with username <username>, gender <gender>, and sports <sports> is logged in
 And   the user is at the profile page
-When the user updates password to <password>, gender to <gender>, and sports to <sports>
+When the user updates password to <newPassword>, gender to <newGender>, and sports to <newSports>
 And  the user presses on the "Save" button
-Then the user with username <username> should have password <password>, gender <gender>, and sports <sports>
+Then the user with username <username> should have password <newPassword>, gender <newGender>, and sports <newSports>
 
 Examples:
-| username | password | gender | sports                              |
-| Chenxin  | chenXin8 | Male   | Soccer:Proficient                   |
-| Neel     | neel5678 | Male   | Soccer:Intermediate,Soccer:Beginner |
+| username | password | gender | sports                                  | newPassword | newGender | newSports                               |
+| Chenxin  | chenXin8 | Male   | Football:Intermediate                   | chenxin8    | Male      | Football:Advanced                       |
+| Neel     | neel5678 | Male   | Football:Intermediate,Swimming:Beginner | Neel5678    | Male      | Football:Intermediate,Swimming:Advanced |
