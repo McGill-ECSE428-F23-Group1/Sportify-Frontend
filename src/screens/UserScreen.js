@@ -67,19 +67,19 @@ const UserScreen = ({route, navigation}) => {
 
     return (
         <View style={styles.container}>
-            <View style={{flex: 1, display: stage=="Explore"? "flex":"none"}} >
-                <View>
-                </View>
+            <View style={{flex: 1, marginBottom: 36, display: stage=="Explore"? "flex":"none"}} >
+                <ExploreScreen
+                    route={route} navigation={navigation}
+                    accountUsername={username}
+                />
             </View>
-            <View style={{flex: 1, display: stage=="Friends"? "flex":"none"}} >
-                <View>
-                </View>
+            <View style={{flex: 1, marginBottom: 36, display: stage=="Friends"? "flex":"none"}} >
+                <FriendsScreen/>
             </View>
-            <View style={{flex: 1, display: stage=="Chat"? "flex":"none"}} >
-                <View>
-                </View>
+            <View style={{flex: 1, marginBottom: 36, display: stage=="Chat"? "flex":"none"}} >
+                <ChatScreen/>
             </View>
-            <View style={{flex: 1, display: stage=="Profile"? "flex":"none"}} >
+            <View style={{flex: 1, marginBottom: 36, display: stage=="Profile"? "flex":"none"}} >
                 <MainProfile 
                     route={route} navigation={navigation}
                     accountUsername={username} setAccountUsername={setUsername} accountPassword={password} setAccountPassword={setPassword}

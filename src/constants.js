@@ -5,6 +5,7 @@ export var colors = {
     blue:       '#A5BBF3',
     black:      '#000000',
     white:      '#F5F5F5',
+    red:        '#ED2939',
 }
 
 export var fonts = StyleSheet.create({
@@ -27,5 +28,13 @@ export var fonts = StyleSheet.create({
     button_text:{
         fontSize: 18,
         fontWeight: "600",
+    },
+    card_title:{
+        fontSize: 16,
+        fontWeight: "600",
+    },
+    card_text:{
+        fontSize: 14,
+        fontWeight: "400",
     },
 })

@@ -3,6 +3,8 @@ import { View, Text, TextInput, Switch, TouchableOpacity, StyleSheet, Modal, Fla
 import { updateBasicProfile, getUser, deleteUser, updateSportLevel, addSportLevel } from '../../features/steps/utils';
 import { Picker } from '@react-native-picker/picker';
 
+import { colors, fonts } from '../constants';
+
 const sportOptions = ['Football', 'Basketball', 'Tennis', 'Swimming', 'Golf'];
 const proficiencyLevelOptions = ['Beginner', 'Intermediate', 'Advanced'];
 
@@ -17,7 +19,6 @@ const MainProfile = ({route, navigation,
   const [username, setUsername] = useState(accountUsername);
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState('MALE');
-  const [privateMode, setPrivateMode] = useState(false);
   const [oldSports, setOldSports] = useState([]);
   const [sports, setSports] = useState([]);
   const [selectedSport, setSelectedSport] = useState(null);
@@ -235,19 +236,19 @@ const MainProfile = ({route, navigation,
       </View> */}
 
       <TouchableOpacity style={styles.button} onPress={handleAdd}>
-        <Text id='add-sport-button' style={styles.buttonText}>Add Sport</Text>
+        <Text id='add-sport-button' style={fonts.button_text}>Add Sport</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={handleSave}>
-        <Text style={styles.buttonText}>Save</Text>
+        <Text style={fonts.button_text}>Save</Text>
       </TouchableOpacity>
 
       <View style={styles.buttonGroup}>
         <TouchableOpacity style={styles.logoutButton} onPress={accountLogout}>
-          <Text style={styles.buttonText}>Logout</Text>
+          <Text style={fonts.button_text}>Logout</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-          <Text style={styles.buttonText}>Delete Account</Text>
+          <Text style={fonts.button_text}>Delete Account</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -296,8 +297,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   sportDropdown: {
-    backgroundColor: 'blue',
-    color: 'white',
+    backgroundColor: colors.blue,
+    color: colors.white,
     padding: 5,
     borderRadius: 5,
     margin: 5,
@@ -305,13 +306,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: colors.blue,
     alignItems: 'center',
     padding: 10,
     marginTop: 10,
-  },
-  buttonText: {
-    color: 'white',
   },
   buttonGroup: {
     flexDirection: 'row',
@@ -319,7 +317,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   logoutButton: {
-    backgroundColor: 'red',
+    backgroundColor: colors.red,
     alignItems: 'center',
     padding: 10,
     flex: 1,
@@ -327,7 +325,7 @@ const styles = StyleSheet.create({
     marginBottom: 30, // Add padding inside the text input
   },
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: colors.red,
     alignItems: 'center',
     padding: 10,
     flex: 1,
@@ -339,21 +337,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   genderButton: {
-    backgroundColor: 'blue',
-    color: 'white',
+    backgroundColor: colors.blue,
+    color: colors.white,
     padding: 5,
     borderRadius: 5,
     flex: 1,
     alignItems: 'center',
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: colors.white,
     borderRadius: 10,
     padding: 20,
     minWidth: 300,
