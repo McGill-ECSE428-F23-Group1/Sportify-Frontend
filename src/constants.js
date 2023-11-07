@@ -34,7 +34,7 @@ export var fonts = StyleSheet.create({
         fontWeight: "600",
     },
     card_text:{
-        fontSize: 14,
-        fontWeight: "400",
+        fontSize: 13,
+        fontWeight: "500",
     },
 })

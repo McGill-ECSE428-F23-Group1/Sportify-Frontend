@@ -43,7 +43,15 @@ const ExploreScreen = ({route, navigation, accountUsername}) => {
                         <TouchableOpacity style={[styles.list_card, {height: 50+10*item.sports.length, display: item.username==accountUsername? "none":"flex"}]}>
                             <View style={[styles.card_text, {height:50+10*item.sports.length}]}>
                                 <Text style={fonts.card_title}>{item.username}</Text>
-                                <Text style={fonts.card_text}>//Waiting for the sports system</Text>
+                                <FlatList
+                                    data={item.sports}
+                                    keyExtractor={item => item.id}
+                                    renderItem={({item}) => 
+                                        <View>
+                                            <Text style={fonts.card_text}>{item.sportName.toUpperCase()} - {item.sportLevel}</Text>
+                                        </View>
+                                    }
+                                />
                             </View>
                             <View style={[styles.card_buttons, {height:50+10*item.sports.length}]}>
                                 <View style={styles.card_button_container}>
