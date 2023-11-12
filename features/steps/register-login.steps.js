@@ -36,6 +36,17 @@ Given(/^the user with username (.*) is logged in$/, async function (username) {
     await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'EXPLORE')]")));
 });
 
+Given(/^the user is logged in$/, async function () {
+    await this.driver.get(frontendBaseUrl);
+    await deleteUser('testuser');
+    await createUser('testuser', '12345678');
+    await this.driver.findElement(By.id('username-text-input')).sendKeys('testuser');
+    await this.driver.findElement(By.id('password-text-input')).sendKeys('12345678');
+    let loginButton = await this.driver.findElement(By.id('login-button'));
+    await this.driver.executeScript('arguments[0].click();', loginButton);
+    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'EXPLORE')]")));
+});
+
 When(/^the user enters username (.*) and password (.*)$/, async function (username, password) {
     await this.driver.findElement(By.id('username-text-input')).sendKeys(username);
     await this.driver.findElement(By.id('password-text-input')).sendKeys(password);
