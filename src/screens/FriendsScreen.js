@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
-
+import { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors, fonts } from '../constants';
 import AppButton from '../components/AppButton';
 import { createUser, getUser, deleteUser } from '../../features/steps/utils';
@@ -9,9 +9,12 @@ import { createUser, getUser, deleteUser } from '../../features/steps/utils';
 const FriendScreen = () => {
     // Mock data for friend requests
     const [friendRequests, setFriendRequests] = useState([
-        { id: '1', sender: 'John Doe', date: '2023-11-01', message: 'Hi, let\'s be friends!' },
-        { id: '2', sender: 'Jane Smith', date: '2023-11-03', message: 'I\'d like to add you to my friend list.' },
+        { id: '1', sender: 'Louis Hsiao', date: '2023-11-01', message: 'Hi, let\'s be friends!' },
+        { id: '2', sender: 'Neel Faucher', date: '2023-11-03', message: 'I\'d like to add you to my friend list.' },
     ]);
+    const [searchBarText, onChangeSearchBarText] = useState("");
+    const [searchText, setSearchText] = useState("");
+
 
     return (
         <View style={styles.container}>
@@ -45,13 +48,29 @@ const FriendScreen = () => {
                     </View>
                 )}
             />
+            <View style={styles.friendRequestsTitle}>
+                <Text style={styles.sectionTitle}>My FRIENDS</Text>
+            </View>
+            <View style={styles.search_bar}>
+                <TextInput
+                    onChangeText={onChangeSearchBarText}
+                    value={searchBarText}
+                    style={styles.search_bar_text}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    spellCheck={false}
+                    maxLength={20}
+                />
+                <TouchableOpacity style={styles.search_bar_button} onPress={() => { setSearchText(searchBarText) }}>
+                    <MaterialCommunityIcons name={"magnify"} size={25} />
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'column',
     },
     friendRequestsTitle: {
@@ -118,6 +137,30 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: colors.black,
     },
+    search_bar: {
+        width: '97.2%',
+        height: 32,
+        backgroundColor: colors.white,
+        flexDirection: 'row',
+        marginHorizontal: 20,
+    },
+    search_bar_text: {
+        flex: 1,
+        marginRight: 32,
+        marginLeft: 6,
+        marginVertical: 6,
+        fontSize: 15,
+        fontWeight: '500',
+    },
+    search_bar_button: {
+        backgroundColor: colors.blue,
+        width: 32,
+        height: 32,
+        alignItems: "center",
+        justifyContent: "center",
+        position: 'absolute',
+        right: 0
+    }
 });
 
 export default FriendScreen;
