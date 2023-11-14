@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
         height: 32,
         backgroundColor: colors.white,
         flexDirection: 'row',
+        borderRadius: 5,
         marginHorizontal: 20,
     },
     search_bar_text: {
@@ -205,7 +206,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         position: 'absolute',
-        right: 0
+        right: 0,
+        borderRadius: 5,
     },
     card_text: {
         flex: 1,
