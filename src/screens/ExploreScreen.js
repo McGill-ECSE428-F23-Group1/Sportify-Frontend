@@ -101,6 +101,7 @@ const ExploreScreen = ({route, navigation, accountUsername}) => {
         },
         list_container: {
             flex: 1,
+            maxHeight: 620,
         },
         list_card:{
             width: '100%',
