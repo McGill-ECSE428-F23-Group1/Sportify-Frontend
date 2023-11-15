@@ -8,12 +8,12 @@ import { colors, fonts } from '../constants';
 const sportOptions = ['Football', 'Basketball', 'Tennis', 'Swimming', 'Golf'];
 const proficiencyLevelOptions = ['Beginner', 'Intermediate', 'Advanced'];
 
-const MainProfile = ({route, navigation, 
-  accountUsername, setAccountUsername, 
-  accountPassword, setAccountPassword, 
-  accountGender, setAccountGender, 
-  accountEmail, setAccountEmail, 
-  accountAddress, setAccountAddress, 
+const MainProfile = ({ route, navigation,
+  accountUsername, setAccountUsername,
+  accountPassword, setAccountPassword,
+  accountGender, setAccountGender,
+  accountEmail, setAccountEmail,
+  accountAddress, setAccountAddress,
   accountFriends, setAccountFriends, accountLogout
 }) => {
   const [username, setUsername] = useState(accountUsername);
@@ -34,15 +34,15 @@ const MainProfile = ({route, navigation,
     if (accountUsername != '') {
       setUsername(accountUsername);
       getUser(accountUsername)
-      .then(response => response.json())
-      .then(profile => {
-        setUsername(profile.username);
-        setPassword(profile.password);
-        setGender(profile.gender || 'MALE');
-        setOldSports(profile.sports);
-        setSports(profile.sports);
-      })
-      .catch(e => console.log(e))
+        .then(response => response.json())
+        .then(profile => {
+          setUsername(profile.username);
+          setPassword(profile.password);
+          setGender(profile.gender || 'MALE');
+          setOldSports(profile.sports);
+          setSports(profile.sports);
+        })
+        .catch(e => console.log(e))
     }
   }, [accountUsername]);
 
@@ -68,14 +68,14 @@ const MainProfile = ({route, navigation,
   const handleDelete = useCallback(() => {
     if (confirm('Are you sure you want to delete your account? This cannot be undone!')) {
       deleteUser(accountUsername)
-      .then(() => {
-        alert('Account deleted successfully')
-        navigation.navigate("OnBoard", {
-          screen: "OnBoard",
-          params: {},
-        });
-      })
-      .catch(e => console.log(e))
+        .then(() => {
+          alert('Account deleted successfully')
+          navigation.navigate("OnBoard", {
+            screen: "OnBoard",
+            params: {},
+          });
+        })
+        .catch(e => console.log(e))
     }
   }, [accountUsername]);
 
@@ -153,7 +153,9 @@ const MainProfile = ({route, navigation,
       {renderSportsModal()}
       {renderProficiencyModal()} */}
 
-      <Text style={styles.header}>Profile</Text>
+      <View style={styles.topBanner}>
+        <Text style={styles.bannerText}>PROFILE</Text>
+      </View>
       <View style={styles.usernameContainer}>
         <Text id='username-text' style={styles.username}>{username}</Text>
       </View>
@@ -258,16 +260,22 @@ const MainProfile = ({route, navigation,
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   image: {
     width: 50,
     height: 50,
     marginHorizontal: 10,
   },
-  header: {
-    textAlign: 'center',
-    fontSize: 24,
+  topBanner: {
+    backgroundColor: colors.blue,
+    padding: 10,
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  bannerText: {
+    color: colors.black,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   usernameContainer: {
     alignItems: 'center',
@@ -281,6 +289,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
+    marginHorizontal: 20,
   },
   textInput: {
     flex: 1,
@@ -291,10 +300,12 @@ const styles = StyleSheet.create({
   label: {
     marginTop: 50,
     fontSize: 16,
+    marginLeft: 20,
   },
   sportsContainer: {
     flexDirection: 'row',
     marginTop: 5,
+    marginHorizontal: 20,
   },
   sportDropdown: {
     backgroundColor: colors.blue,
@@ -307,6 +318,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: colors.blue,
+    marginHorizontal: 20,
     alignItems: 'center',
     padding: 10,
     marginTop: 10,
@@ -321,6 +333,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     flex: 1,
+    marginLeft: 20,
     marginRight: 10,
     marginBottom: 30, // Add padding inside the text input
   },
@@ -329,6 +342,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     flex: 1,
+    marginRight: 20,
     marginBottom: 30, // Add padding inside the text input
   },
   imageButtons: {

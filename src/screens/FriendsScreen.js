@@ -40,7 +40,7 @@ const FriendScreen = ({ accountUsername }) => {
             </View>
 
 
-            <View style={styles.friendRequestsTitle}>
+            <View style={styles.sectionTitleContainer}>
                 <Text style={styles.sectionTitle}>FRIEND REQUESTS</Text>
             </View>
             <ScrollView style={styles.requests_container}>
@@ -66,7 +66,7 @@ const FriendScreen = ({ accountUsername }) => {
                     )}
                 />
             </ScrollView>
-            <View style={styles.friendRequestsTitle}>
+            <View style={styles.sectionTitleContainer}>
                 <Text style={styles.sectionTitle}>My FRIENDS</Text>
             </View>
             <View style={styles.search_bar}>
@@ -117,14 +117,16 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
     },
-    friendRequestsTitle: {
+    sectionTitleContainer: {
         padding: 10,
         marginTop: 10,
+        backgroundColor: colors.light_blue, // Optional: Background color for the title container
     },
     sectionTitle: {
         fontWeight: 'bold',
-        fontSize: 20,
-        marginHorizontal: 12,
+        fontSize: 20, // Larger and more prominent font size
+        color: colors.dark_blue, // Color that matches your app's theme
+        textTransform: 'uppercase', // Optional: Transform text to uppercase for stylistic preference
     },
     topBanner: {
         backgroundColor: colors.blue,
@@ -148,7 +150,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 10,
         borderRadius: 5,
-        marginHorizontal: 20,
+        marginHorizontal: 10,
     },
     senderName: {
         fontWeight: 'bold',
@@ -184,12 +186,12 @@ const styles = StyleSheet.create({
     },
     //
     search_bar: {
-        width: '97.2%',
         height: 32,
         backgroundColor: colors.white,
         flexDirection: 'row',
         borderRadius: 5,
-        marginHorizontal: 20,
+        marginHorizontal: 10,
+        paddingHorizontal: 10,
     },
     search_bar_text: {
         flex: 1,
@@ -211,8 +213,6 @@ const styles = StyleSheet.create({
     },
     card_text: {
         flex: 1,
-        paddingRight: 100,
-        padding: 4,
     },
     card_buttons: {
         flexDirection: "row",
@@ -233,13 +233,14 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
     },
     list_card: {
-        width: '97.2%',
-        marginHorizontal: 20,
-        height: 50,
         backgroundColor: colors.blue,
-        borderRadius: 5,
+        borderRadius: 8,
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         marginBottom: 10,
-        flexDirection: "row"
+        marginHorizontal: 10,
     },
     list_container: {
         flex: 1,
