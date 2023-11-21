@@ -73,7 +73,7 @@ const ExploreScreen = ({route, navigation, accountUsername}) => {
                                 </View>
                                 <View style={[styles.card_buttons, {height:50+10*item.sports.length}]}>
                                     <View style={styles.card_button_container}>
-                                        <TouchableOpacity style={styles.card_button} onPress={()=>pressAddFriend(item.username)}>
+                                        <TouchableOpacity id={`add-friend-button-${item.username}`} style={styles.card_button} onPress={()=>pressAddFriend(item.username)}>
                                             <MaterialCommunityIcons name={"account-plus"} size={25}/>
                                         </TouchableOpacity>
                                     </View>

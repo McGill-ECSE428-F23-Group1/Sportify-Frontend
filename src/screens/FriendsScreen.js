@@ -55,10 +55,16 @@ const FriendScreen = ({ accountUsername }) => {
                                 <Text style={styles.requestMessage}>{item.message}</Text>
                             </View>
                             <View style={styles.actionButtons}>
-                                <TouchableOpacity style={styles.actionButton}>
+                                <TouchableOpacity
+                                    id={`accept-friend-request-button-${item.sender}`}
+                                    style={styles.actionButton}
+                                >
                                     <Text style={styles.buttonText}>✓</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.actionButton}>
+                                <TouchableOpacity
+                                    id={`decline-friend-request-button-${item.sender}`}
+                                    style={styles.actionButton}
+                                >
                                     <Text style={styles.buttonText}>✗</Text>
                                 </TouchableOpacity>
                             </View>
