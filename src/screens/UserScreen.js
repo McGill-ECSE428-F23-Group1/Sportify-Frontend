@@ -74,10 +74,10 @@ const UserScreen = ({route, navigation}) => {
                 />
             </View>
             <View style={{flex: 1, marginBottom: 36, display: stage=="Friends"? "flex":"none"}} >
-                <FriendsScreen/>
+                <FriendsScreen accountUsername={username}/>
             </View>
             <View style={{flex: 1, marginBottom: 36, display: stage=="Chat"? "flex":"none"}} >
-                <ChatScreen/>
+                <ChatScreen accountUsername={username}/>
             </View>
             <View style={{flex: 1, marginBottom: 36, display: stage=="Profile"? "flex":"none"}} >
                 <MainProfile 

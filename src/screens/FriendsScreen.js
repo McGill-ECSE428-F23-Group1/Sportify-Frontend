@@ -16,20 +16,28 @@ const FriendScreen = ({ accountUsername }) => {
     ]);
     const [searchBarText, onChangeSearchBarText] = useState("");
     const [searchText, setSearchText] = useState("");
-    const [allAccounts, setAllAccounts] = useState([]);
+    const [friends, setFriends] = useState([]);
 
     useEffect(() => {
-        const getAllAccounts = async () => {
-            const response = await getUser("");
-            const response_json = await response.json();
-            const response_code = response.status;
-            if ((response).status >= 200 || (response).status < 300) {
-                setAllAccounts(response_json);
-            } else {
-                setMessage("Error code: " + response_code);
+        const intervalId = setInterval(() => {
+            if (accountUsername != '') {
+                getUser(accountUsername)
+                .then(response => {
+                    if (response.status < 200 || response.status >= 300) {
+                        setMessage("Error code: " + response_code);
+                    } else {
+                        response.json()
+                        .then(async response_json => {
+                            const friendProfiles = await Promise.all(
+                                response_json.friends.map(async username => await (await getUser(username)).json())
+                            );
+                            setFriends(friendProfiles);
+                        });
+                    }
+                })
             }
-        }
-        getAllAccounts();
+        }, 500); // Fetch friends list and friend requests every 0.5 seconds, in case they are updated after the user logs in
+        return () => clearInterval(intervalId); // Unmount the polling at teardown
     }, [accountUsername]);
 
 
@@ -93,7 +101,7 @@ const FriendScreen = ({ accountUsername }) => {
             <View style={{ marginTop: 10 }}>
                 <ScrollView style={styles.list_container}>
                     <FlatList
-                        data={allAccounts}
+                        data={friends}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) =>
                             <TouchableOpacity style={[styles.list_card, {
