@@ -25,10 +25,16 @@ const updateSportLevel = async (username, sport, level) =>
         sportLevel: level
     }), { method: 'PATCH' });
 
+const addFriend = async (username1, username2) =>
+    await fetch(`${apiBaseUrl}/memberfriend?` + new URLSearchParams({
+        username1: username1,
+        username2: username2
+    }), { method: 'POST' });
+
 const getSportLevelPairsFromString = s =>
     s.split(",").map(sportLevelPairAsString => {
         const sportLevelPairAsArray = sportLevelPairAsString.split(":");
         return { sportName: sportLevelPairAsArray[0], sportLevel: sportLevelPairAsArray[1] };
     });
 
-module.exports = { apiBaseUrl, frontendBaseUrl, createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, getSportLevelPairsFromString };
+module.exports = { apiBaseUrl, frontendBaseUrl, createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, addFriend, getSportLevelPairsFromString };
