@@ -34,11 +34,11 @@ const addFriend = async (username1, username2) =>
         username2: username2
     }), { method: 'POST' });
 
-const addFriendRequest = async (senderUsername, receiverUsername) =>
+const addFriendRequest = async (senderUsername, receiverUsername, message) =>
     await fetch(`${apiBaseUrl}/friendRequest?` + new URLSearchParams({
         senderUsername: senderUsername,
         receiverUsername: receiverUsername,
-        message: 'Hello'
+        message: message
     }), { method: 'POST' });
 
 const deleteFriendRequest = async (id) =>
