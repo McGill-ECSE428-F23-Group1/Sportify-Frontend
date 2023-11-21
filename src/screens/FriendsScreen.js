@@ -3,17 +3,11 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollVi
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors, fonts } from '../constants';
 import AppButton from '../components/AppButton';
-import { createUser, getUser, deleteUser } from '../../features/steps/utils';
+import { createUser, getUser, deleteUser, getFriendRequestsReceived, acceptFriendRequest, addFriend, declineFriendRequest } from '../../features/steps/utils';
 
 
 const FriendScreen = ({ accountUsername }) => {
-    // Mock data for friend requests
-    const [friendRequests, setFriendRequests] = useState([
-        { id: '1', sender: 'Louis Hsiao', date: '2023-11-01', message: 'Hi, let\'s be friends!' },
-        { id: '2', sender: 'Neel Faucher', date: '2023-11-03', message: 'I\'d like to add you to my friend list.' },
-        { id: '3', sender: 'Alan Walker', date: '2023-11-03', message: 'I\'d like to add you to my friend list.' },
-        { id: '4', sender: 'A-Train', date: '2023-11-03', message: 'I\'d like to add you to my friend list.' },
-    ]);
+    const [friendRequests, setFriendRequests] = useState([]);
     const [searchBarText, onChangeSearchBarText] = useState("");
     const [searchText, setSearchText] = useState("");
     const [friends, setFriends] = useState([]);
@@ -34,7 +28,10 @@ const FriendScreen = ({ accountUsername }) => {
                             setFriends(friendProfiles);
                         });
                     }
-                })
+                });
+                getFriendRequestsReceived(accountUsername)
+                .then(response => response.json())
+                .then(requests => setFriendRequests(requests.filter(request => request.status == 'PENDING')))
             }
         }, 500); // Fetch friends list and friend requests every 0.5 seconds, in case they are updated after the user logs in
         return () => clearInterval(intervalId); // Unmount the polling at teardown
@@ -58,20 +55,29 @@ const FriendScreen = ({ accountUsername }) => {
                     renderItem={({ item }) => (
                         <View style={styles.requestItem}>
                             <View style={styles.requestDetails}>
-                                <Text style={styles.senderName}>{item.sender}</Text>
+                                <Text style={styles.senderName}>{item.sender.username}</Text>
                                 <Text style={styles.requestDate}>{item.date}</Text>
                                 <Text style={styles.requestMessage}>{item.message}</Text>
                             </View>
                             <View style={styles.actionButtons}>
                                 <TouchableOpacity
-                                    id={`accept-friend-request-button-${item.sender}`}
+                                    id={`accept-friend-request-button-${item.sender.username}`}
                                     style={styles.actionButton}
+                                    onPress = {() => {
+                                        acceptFriendRequest(item.id)
+                                        .then(() => addFriend(accountUsername, item.sender.username))
+                                        .then(() => alert('Friend request accepted'));
+                                    }}
                                 >
                                     <Text style={styles.buttonText}>✓</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
-                                    id={`decline-friend-request-button-${item.sender}`}
+                                    id={`decline-friend-request-button-${item.sender.username}`}
                                     style={styles.actionButton}
+                                    onPress = {() => {
+                                        declineFriendRequest(item.id)
+                                        .then(() => alert('Friend request declined'));
+                                    }}
                                 >
                                     <Text style={styles.buttonText}>✗</Text>
                                 </TouchableOpacity>

@@ -41,6 +41,15 @@ const addFriendRequest = async (senderUsername, receiverUsername, message) =>
         message: message
     }), { method: 'POST' });
 
+const getFriendRequestsReceived = async (username) =>
+    await fetch(`${apiBaseUrl}/friendRequest/receiver/${username}`, { method: 'GET' });
+
+const acceptFriendRequest = async (id) =>
+    await fetch(`${apiBaseUrl}/friendRequest/updateStatus/${id}?` + new URLSearchParams({ status: 'ACCEPTED' }), { method: 'PUT' });
+
+const declineFriendRequest = async (id) =>
+    await fetch(`${apiBaseUrl}/friendRequest/updateStatus/${id}?` + new URLSearchParams({ status: 'REJECTED' }), { method: 'PUT' });
+
 const deleteFriendRequest = async (id) =>
     await fetch(`${apiBaseUrl}/friendRequest/${id}`, { method: 'DELETE' });
     
@@ -65,4 +74,8 @@ const getSportLevelPairsFromString = s =>
         return { sportName: sportLevelPairAsArray[0], sportLevel: sportLevelPairAsArray[1] };
     });
 
-module.exports = { apiBaseUrl, frontendBaseUrl, createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, addFriend, addFriendRequest, deleteFriendRequestsWithUser, getSportLevelPairsFromString };
+module.exports = {
+    apiBaseUrl, frontendBaseUrl,
+    createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, getSportLevelPairsFromString,
+    addFriend, addFriendRequest, getFriendRequestsReceived, acceptFriendRequest, declineFriendRequest, deleteFriendRequestsWithUser
+};
