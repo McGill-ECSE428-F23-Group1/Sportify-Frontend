@@ -12,7 +12,9 @@ const updateBasicProfile = async (username, password, gender) =>
         gender: gender
     }), { method: 'PATCH' });
 const deleteUser = async username => {
-    await deleteFriendRequestsWithUser(username);
+    if ((await getUser(username)).status == 200) {
+        await deleteFriendRequestsWithUser(username);
+    }
     await fetch(`${apiBaseUrl}/member/${username}`, { method: 'DELETE' })
 };
 
