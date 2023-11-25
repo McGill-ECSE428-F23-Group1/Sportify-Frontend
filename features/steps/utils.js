@@ -70,6 +70,13 @@ const deleteFriendRequestsWithUser = async (username) => {
     )
 }
 
+const createChat = async (username1, username2) => {
+    await fetch(`${apiBaseUrl}/chat?` + new URLSearchParams({
+        member1Username: username1,
+        member2Username: username2
+    }), { method: 'POST' });
+}
+
 const getSportLevelPairsFromString = s =>
     s.split(",").map(sportLevelPairAsString => {
         const sportLevelPairAsArray = sportLevelPairAsString.split(":");
@@ -79,5 +86,7 @@ const getSportLevelPairsFromString = s =>
 module.exports = {
     apiBaseUrl, frontendBaseUrl,
     createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, getSportLevelPairsFromString,
-    addFriend, addFriendRequest, getFriendRequestsReceived, acceptFriendRequest, declineFriendRequest, deleteFriendRequestsWithUser
+    addFriend, addFriendRequest, getFriendRequestsReceived, acceptFriendRequest, declineFriendRequest,
+    createChat,
+    deleteFriendRequestsWithUser
 };
