@@ -11,7 +11,12 @@ const updateBasicProfile = async (username, password, gender) =>
         password: password,
         gender: gender
     }), { method: 'PATCH' });
-const deleteUser = async username => await fetch(`${apiBaseUrl}/member/${username}`, { method: 'DELETE' });
+const deleteUser = async username => {
+    if ((await getUser(username)).status == 200) {
+        await deleteFriendRequestsWithUser(username);
+    }
+    await fetch(`${apiBaseUrl}/member/${username}`, { method: 'DELETE' })
+};
 
 const addSportLevel = async (username, sport, level) =>
     await fetch(`${apiBaseUrl}/membersport/${username}?` + new URLSearchParams({
@@ -25,10 +30,54 @@ const updateSportLevel = async (username, sport, level) =>
         sportLevel: level
     }), { method: 'PATCH' });
 
+const addFriend = async (username1, username2) =>
+    await fetch(`${apiBaseUrl}/memberfriend?` + new URLSearchParams({
+        username1: username1,
+        username2: username2
+    }), { method: 'POST' });
+
+const addFriendRequest = async (senderUsername, receiverUsername, message) =>
+    await fetch(`${apiBaseUrl}/friendRequest?` + new URLSearchParams({
+        senderUsername: senderUsername,
+        receiverUsername: receiverUsername,
+        message: message
+    }), { method: 'POST' });
+
+const getFriendRequestsReceived = async (username) =>
+    await fetch(`${apiBaseUrl}/friendRequest/receiver/${username}`, { method: 'GET' });
+
+const acceptFriendRequest = async (id) =>
+    await fetch(`${apiBaseUrl}/friendRequest/updateStatus/${id}?` + new URLSearchParams({ status: 'ACCEPTED' }), { method: 'PUT' });
+
+const declineFriendRequest = async (id) =>
+    await fetch(`${apiBaseUrl}/friendRequest/updateStatus/${id}?` + new URLSearchParams({ status: 'REJECTED' }), { method: 'PUT' });
+
+const deleteFriendRequest = async (id) =>
+    await fetch(`${apiBaseUrl}/friendRequest/${id}`, { method: 'DELETE' });
+    
+const deleteFriendRequestsWithUser = async (username) => {
+    await Promise.all(
+        ( await
+            fetch(`${apiBaseUrl}/friendRequest/sender/${username}`, { method: 'GET' })
+            .then(response => response.json())
+        ).map(async request => await deleteFriendRequest(request.id))
+    );
+    await Promise.all(
+        ( await 
+            fetch(`${apiBaseUrl}/friendRequest/receiver/${username}`, { method: 'GET' })
+            .then(response => response.json())
+        ).map(async request => await deleteFriendRequest(request.id))
+    )
+}
+
 const getSportLevelPairsFromString = s =>
     s.split(",").map(sportLevelPairAsString => {
         const sportLevelPairAsArray = sportLevelPairAsString.split(":");
         return { sportName: sportLevelPairAsArray[0], sportLevel: sportLevelPairAsArray[1] };
     });
 
-module.exports = { apiBaseUrl, frontendBaseUrl, createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, getSportLevelPairsFromString };
+module.exports = {
+    apiBaseUrl, frontendBaseUrl,
+    createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, getSportLevelPairsFromString,
+    addFriend, addFriendRequest, getFriendRequestsReceived, acceptFriendRequest, declineFriendRequest, deleteFriendRequestsWithUser
+};

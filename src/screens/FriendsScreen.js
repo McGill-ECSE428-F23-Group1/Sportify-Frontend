@@ -3,33 +3,38 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollVi
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors, fonts } from '../constants';
 import AppButton from '../components/AppButton';
-import { createUser, getUser, deleteUser } from '../../features/steps/utils';
+import { createUser, getUser, deleteUser, getFriendRequestsReceived, acceptFriendRequest, addFriend, declineFriendRequest } from '../../features/steps/utils';
 
 
 const FriendScreen = ({ accountUsername }) => {
-    // Mock data for friend requests
-    const [friendRequests, setFriendRequests] = useState([
-        { id: '1', sender: 'Louis Hsiao', date: '2023-11-01', message: 'Hi, let\'s be friends!' },
-        { id: '2', sender: 'Neel Faucher', date: '2023-11-03', message: 'I\'d like to add you to my friend list.' },
-        { id: '3', sender: 'Alan Walker', date: '2023-11-03', message: 'I\'d like to add you to my friend list.' },
-        { id: '4', sender: 'A-Train', date: '2023-11-03', message: 'I\'d like to add you to my friend list.' },
-    ]);
+    const [friendRequests, setFriendRequests] = useState([]);
     const [searchBarText, onChangeSearchBarText] = useState("");
     const [searchText, setSearchText] = useState("");
-    const [allAccounts, setAllAccounts] = useState([]);
+    const [friends, setFriends] = useState([]);
 
     useEffect(() => {
-        const getAllAccounts = async () => {
-            const response = await getUser("");
-            const response_json = await response.json();
-            const response_code = response.status;
-            if ((response).status >= 200 || (response).status < 300) {
-                setAllAccounts(response_json);
-            } else {
-                setMessage("Error code: " + response_code);
+        const intervalId = setInterval(() => {
+            if (accountUsername != '') {
+                getUser(accountUsername)
+                .then(response => {
+                    if (response.status < 200 || response.status >= 300) {
+                        setMessage("Error code: " + response_code);
+                    } else {
+                        response.json()
+                        .then(async response_json => {
+                            const friendProfiles = await Promise.all(
+                                response_json.friends.map(async username => await (await getUser(username)).json())
+                            );
+                            setFriends(friendProfiles);
+                        });
+                    }
+                });
+                getFriendRequestsReceived(accountUsername)
+                .then(response => response.json())
+                .then(requests => setFriendRequests(requests.filter(request => request.status == 'PENDING')))
             }
-        }
-        getAllAccounts();
+        }, 500); // Fetch friends list and friend requests every 0.5 seconds, in case they are updated after the user logs in
+        return () => clearInterval(intervalId); // Unmount the polling at teardown
     }, [accountUsername]);
 
 
@@ -50,15 +55,30 @@ const FriendScreen = ({ accountUsername }) => {
                     renderItem={({ item }) => (
                         <View style={styles.requestItem}>
                             <View style={styles.requestDetails}>
-                                <Text style={styles.senderName}>{item.sender}</Text>
+                                <Text style={styles.senderName}>{item.sender.username}</Text>
                                 <Text style={styles.requestDate}>{item.date}</Text>
                                 <Text style={styles.requestMessage}>{item.message}</Text>
                             </View>
                             <View style={styles.actionButtons}>
-                                <TouchableOpacity style={styles.actionButton}>
+                                <TouchableOpacity
+                                    id={`accept-friend-request-button-${item.sender.username}`}
+                                    style={styles.actionButton}
+                                    onPress = {() => {
+                                        acceptFriendRequest(item.id)
+                                        .then(() => addFriend(accountUsername, item.sender.username))
+                                        .then(() => alert('Friend request accepted'));
+                                    }}
+                                >
                                     <Text style={styles.buttonText}>✓</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.actionButton}>
+                                <TouchableOpacity
+                                    id={`decline-friend-request-button-${item.sender.username}`}
+                                    style={styles.actionButton}
+                                    onPress = {() => {
+                                        declineFriendRequest(item.id)
+                                        .then(() => alert('Friend request declined'));
+                                    }}
+                                >
                                     <Text style={styles.buttonText}>✗</Text>
                                 </TouchableOpacity>
                             </View>
@@ -87,7 +107,7 @@ const FriendScreen = ({ accountUsername }) => {
             <View style={{ marginTop: 10 }}>
                 <ScrollView style={styles.list_container}>
                     <FlatList
-                        data={allAccounts}
+                        data={friends}
                         keyExtractor={item => item.id}
                         renderItem={({ item }) =>
                             <TouchableOpacity style={[styles.list_card, {

@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { colors, fonts } from '../constants';
 import AppButton from '../components/AppButton';
-import { createUser, getUser, deleteUser } from '../../features/steps/utils';
+import { createUser, getUser, deleteUser, addFriendRequest } from '../../features/steps/utils';
 
 
 const ExploreScreen = ({ route, navigation, accountUsername }) => {
@@ -27,8 +27,15 @@ const ExploreScreen = ({ route, navigation, accountUsername }) => {
         getAllAccounts();
     }, [accountUsername]);
 
-    const pressAddFriend = async (friend_username) => {
-        console.log(friend_username)
+    const pressAddFriend = async(friend_username) => {
+        await addFriendRequest(accountUsername, friend_username)
+        .then(response => {
+            if (response.status == 200) {
+                alert(`A friend request is sent to ${friend_username} successfully`)
+            } else {
+                response.json().then(content => alert(content.message));
+            }
+        });
     };
 
     const pressChat = async (chat_username) => {
@@ -78,8 +85,9 @@ const ExploreScreen = ({ route, navigation, accountUsername }) => {
                                 </View>
                                 <View style={[styles.card_buttons, { height: 50 + 10 * item.sports.length }]}>
                                     <View style={styles.card_button_container}>
-                                        <TouchableOpacity style={styles.card_button} onPress={() => pressAddFriend(item.username)}>
-                                            <MaterialCommunityIcons name={"account-plus"} size={25} />
+
+                                        <TouchableOpacity id={`add-friend-button-${item.username}`} style={styles.card_button} onPress={()=>pressAddFriend(item.username)}>
+                                            <MaterialCommunityIcons name={"account-plus"} size={25}/>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.card_button_container}>
