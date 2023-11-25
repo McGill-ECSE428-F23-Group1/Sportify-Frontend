@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, FlatList, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { colors } from '../constants';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AppButton from '../components/AppButton';
 import { getUser } from '../../features/steps/utils';
 import exploreImage from '/src/components/navigation.png'; // Ensure correct path
 
@@ -32,6 +34,9 @@ const ChatScreen = () => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.topBanner}>
+                <Text style={styles.bannerText}>CHAT</Text>
+            </View>
             <ScrollView style={styles.list_container}>
                 <FlatList
                     data={allAccounts}
@@ -39,12 +44,15 @@ const ChatScreen = () => {
                     renderItem={({ item }) => (
                         <View style={styles.list_card}>
                             <View style={styles.card_text}>
-                            <Text style={styles.boldText}>{item.username}</Text> {getCurrentDateTime()}
+                                <Text style={styles.userNameText}>{item.username}</Text>
+                                <Text style={styles.timestampText}>{getCurrentDateTime()}</Text>
                             </View>
-                            <View style={styles.card_button_container}>
-                                <TouchableOpacity onPress={() => onImageButtonPress(item.username)}>
-                                    <Image source={exploreImage} style={styles.imageButton} />
-                                </TouchableOpacity>
+                            <View style={[styles.card_buttons]}>
+                                <View style={styles.card_button_container}>
+                                    <TouchableOpacity style={styles.card_button} onPress={() => pressChat(item.username)}>
+                                        <MaterialCommunityIcons name={"message-processing-outline"} size={25} />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     )}
@@ -56,42 +64,73 @@ const ChatScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: colors.light_blue,
-        margin: 20,
         flexDirection: 'column',
     },
     list_container: {
         flex: 1,
+        maxHeight: 620,
+    },
+    topBanner: {
+        backgroundColor: colors.blue,
+        padding: 10,
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    bannerText: {
+        color: colors.black,
+        fontSize: 20,
+        fontWeight: 'bold',
     },
     list_card: {
-        width: '100%',
-        height: 85,
         backgroundColor: colors.blue,
         marginBottom: 10,
+        marginHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 11,
+        padding: 10,
+        borderRadius: 8,
     },
     card_text: {
         flex: 4,
     },
-    boldText: {
+    userNameText: {
         fontWeight: 'bold',
+        color: colors.black,
+        fontSize: 20,
+    },
+    card_button: {
+        width: 32,
+        height: 32,
+        borderRadius: 18,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.white,
+        marginHorizontal: 10,
+    },
+    card_buttons: {
+        flexDirection: "row",
+        alignItems: 'center',
     },
     card_button_container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: 0,
-        right: -150,
     },
     imageButton: {
         width: 32,
         height: 32,
     },
+    userNameText: {
+        fontWeight: 'bold',
+        color: colors.black,
+        fontSize: 18, // Slightly larger font size for username
+        marginBottom: 5, // Add some space between username and timestamp
+    },
+    timestampText: {
+        color: colors.dark_gray, // A softer color for the timestamp
+        fontSize: 14, // Smaller font size for timestamp
+    },
 });
 
 export default ChatScreen;
-    
