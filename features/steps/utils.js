@@ -77,6 +77,14 @@ const createChat = async (username1, username2) => {
     }), { method: 'POST' });
 }
 
+const createMessage = async (sender, receiver, content) => {
+    await fetch(`${apiBaseUrl}/message?` + new URLSearchParams({
+        senderUsername: sender,
+        receiverUsername: receiver,
+        description: content
+    }), { method: 'POST' });
+}
+
 const getSportLevelPairsFromString = s =>
     s.split(",").map(sportLevelPairAsString => {
         const sportLevelPairAsArray = sportLevelPairAsString.split(":");
@@ -87,6 +95,6 @@ module.exports = {
     apiBaseUrl, frontendBaseUrl,
     createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, getSportLevelPairsFromString,
     addFriend, addFriendRequest, getFriendRequestsReceived, acceptFriendRequest, declineFriendRequest,
-    createChat,
+    createChat, createMessage,
     deleteFriendRequestsWithUser
 };
