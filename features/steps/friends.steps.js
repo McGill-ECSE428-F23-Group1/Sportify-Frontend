@@ -34,7 +34,7 @@ Then(/^the user should see an error message indicating a pending friend request 
 
 Then(/^an error should appear indicating that (.*) is already a friend$/, async function (username) {
     await this.driver.wait(until.alertIsPresent());
-    // assert(await this.driver.switchTo().alert().getText() == `This person has already been your friend!`);
+    assert(await this.driver.switchTo().alert().getText() == `This person is already your friend!`);
     await this.driver.switchTo().alert().accept();
 });
 
