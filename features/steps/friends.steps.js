@@ -1,7 +1,7 @@
 const { Given, When, Then } = require("cucumber");
 const assert = require('assert');
 const { By, until } = require('selenium-webdriver');
-const { createUser, addFriend, addFriendRequest, deleteFriendRequestsWithUser, getUser } = require('./utils');
+const { createUser, addFriend, addFriendRequest, deleteFriendRequestsWithUser } = require('./utils');
 
 Given(/^the user is already friends with (.*)$/, async function (friend) {
     await addFriend('testuser', friend);
@@ -39,7 +39,6 @@ Then(/^an error should appear indicating that (.*) is already a friend$/, async 
 });
 
 Given(/^there is an incoming friend request from user (.*)$/, async function (username) {
-    await deleteFriendRequestsWithUser('testuser');
     await addFriendRequest(username, 'testuser', 'Hello');
 });
 
