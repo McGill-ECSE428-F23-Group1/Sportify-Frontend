@@ -7,6 +7,10 @@ Given(/^the user is already friends with (.*)$/, async function (friend) {
     await addFriend('testuser', friend);
 });
 
+Given(/^(.*) is friend with (.*)$/, async function (username1, username2) {
+    await addFriend(username1, username2);
+});
+
 Given(/^(.*) has friends (.*)$/, async function (username, friendsCommaSeparated) {
     await Promise.all(friendsCommaSeparated.split(",").map(async friend => {
         await createUser(friend, '12345678');

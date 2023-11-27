@@ -39,11 +39,10 @@ Then(/^the user should be able to see the list of chat channels with (.*) respec
     }));
 });
 
-Given(/^the user is at the chat page with (.*)$/, async function (username) {
-    await this.driver.wait(until.elementLocated(By.id('chat-tab')))
-    const chatsButton = await this.driver.findElement(By.id('chat-tab'));
-    await this.driver.executeScript('arguments[0].click();', chatsButton);
-    // TODO
+Given(/^the user enters the chat page with (.*)$/, async function (username) {
+    await this.driver.wait(until.elementLocated(By.id(`send-message-button-${username}`)));
+    const messageButton = await this.driver.findElement(By.id(`send-message-button-${username}`));
+    await this.driver.executeScript('arguments[0].click();', messageButton);
 });
 
 When(/^the user enters the message (.*)$/, async function (message) {
@@ -59,6 +58,7 @@ Then(/^the user should be able to see the message (.*) at the chat page$/, async
 });
 
 Then(/^the user (.*) should be able to see the message (.*) at the chat page with (.*)$/, async function (username, message, username2) {
+    await this.driver.wait(until.elementLocated(By.id('profile-tab')));
     const profileButton = await this.driver.findElement(By.id('profile-tab'));
     await this.driver.executeScript('arguments[0].click();', profileButton);
     await this.driver.wait(until.elementLocated(By.xpath("//*[text()='Logout']")));

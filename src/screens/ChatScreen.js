@@ -51,7 +51,7 @@ const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUserna
                                 <Text style={styles.boldText}>{item.username}</Text>
                             </View>
                             <View style={styles.card_button_container}>
-                                <TouchableOpacity onPress={() => onImageButtonPress(item.username)}>
+                                <TouchableOpacity id={`send-message-button-${item.username}`} onPress={() => onImageButtonPress(item.username)}>
                                     <Image source={exploreImage} style={styles.imageButton} />
                                 </TouchableOpacity>
                             </View>
