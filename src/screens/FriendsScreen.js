@@ -16,22 +16,22 @@ const FriendScreen = ({ accountUsername }) => {
         const intervalId = setInterval(() => {
             if (accountUsername != '') {
                 getUser(accountUsername)
-                .then(response => {
-                    if (response.status < 200 || response.status >= 300) {
-                        setMessage("Error code: " + response_code);
-                    } else {
-                        response.json()
-                        .then(async response_json => {
-                            const friendProfiles = await Promise.all(
-                                response_json.friends.map(async username => await (await getUser(username)).json())
-                            );
-                            setFriends(friendProfiles);
-                        });
-                    }
-                });
+                    .then(response => {
+                        if (response.status < 200 || response.status >= 300) {
+                            setMessage("Error code: " + response_code);
+                        } else {
+                            response.json()
+                                .then(async response_json => {
+                                    const friendProfiles = await Promise.all(
+                                        response_json.friends.map(async username => await (await getUser(username)).json())
+                                    );
+                                    setFriends(friendProfiles);
+                                });
+                        }
+                    });
                 getFriendRequestsReceived(accountUsername)
-                .then(response => response.json())
-                .then(requests => setFriendRequests(requests.filter(request => request.status == 'PENDING')))
+                    .then(response => response.json())
+                    .then(requests => setFriendRequests(requests.filter(request => request.status == 'PENDING')))
             }
         }, 500); // Fetch friends list and friend requests every 0.5 seconds, in case they are updated after the user logs in
         return () => clearInterval(intervalId); // Unmount the polling at teardown
@@ -63,10 +63,10 @@ const FriendScreen = ({ accountUsername }) => {
                                 <TouchableOpacity
                                     id={`accept-friend-request-button-${item.sender.username}`}
                                     style={styles.actionButton}
-                                    onPress = {() => {
+                                    onPress={() => {
                                         acceptFriendRequest(item.id)
-                                        .then(() => addFriend(accountUsername, item.sender.username))
-                                        .then(() => alert('Friend request accepted'));
+                                            .then(() => addFriend(accountUsername, item.sender.username))
+                                            .then(() => alert('Friend request accepted'));
                                     }}
                                 >
                                     <Text style={styles.buttonText}>✓</Text>
@@ -74,9 +74,9 @@ const FriendScreen = ({ accountUsername }) => {
                                 <TouchableOpacity
                                     id={`decline-friend-request-button-${item.sender.username}`}
                                     style={styles.actionButton}
-                                    onPress = {() => {
+                                    onPress={() => {
                                         declineFriendRequest(item.id)
-                                        .then(() => alert('Friend request declined'));
+                                            .then(() => alert('Friend request declined'));
                                     }}
                                 >
                                     <Text style={styles.buttonText}>✗</Text>
