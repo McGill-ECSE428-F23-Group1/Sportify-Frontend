@@ -40,21 +40,23 @@ Then(/^the user should be able to see the list of chat channels with (.*) respec
 });
 
 Given(/^the user enters the chat page with (.*)$/, async function (username) {
-    await this.driver.wait(until.elementLocated(By.id(`send-message-button-${username}`)));
-    const messageButton = await this.driver.findElement(By.id(`send-message-button-${username}`));
+    await this.driver.wait(until.elementLocated(By.id(`message-button-${username}`)));
+    const messageButton = await this.driver.findElement(By.id(`message-button-${username}`));
     await this.driver.executeScript('arguments[0].click();', messageButton);
 });
 
 When(/^the user enters the message (.*)$/, async function (message) {
-    // TODO
+    await this.driver.findElement(By.id('message-input')).sendKeys(message);
 });
 
 When(/^the user sends the message$/, async function () {
-    // TODO
+    await this.driver.wait(until.elementLocated(By.id(`send-button`)));
+    const sendButton = await this.driver.findElement(By.id(`send-button`));
+    await this.driver.executeScript('arguments[0].click();', sendButton);
 });
 
 Then(/^the user should be able to see the message (.*) at the chat page$/, async function (message) {
-    // TODO
+    await this.driver.wait(until.elementLocated(By.xpath(`//*[contains(text(), '${message}')]`)));
 });
 
 Then(/^the user (.*) should be able to see the message (.*) at the chat page with (.*)$/, async function (username, message, username2) {
@@ -79,8 +81,8 @@ Then(/^the user (.*) should be able to see the message (.*) at the chat page wit
     const chatsButton = await this.driver.findElement(By.id('chat-tab'));
     await this.driver.executeScript('arguments[0].click();', chatsButton);
 
-    await this.driver.wait(until.elementLocated(By.id(`send-message-button-${username2}`)));
-    const messageButton = await this.driver.findElement(By.id(`send-message-button-${username2}`));
+    await this.driver.wait(until.elementLocated(By.id(`message-button-${username2}`)));
+    const messageButton = await this.driver.findElement(By.id(`message-button-${username2}`));
     await this.driver.executeScript('arguments[0].click();', messageButton);
 
     // TODO
