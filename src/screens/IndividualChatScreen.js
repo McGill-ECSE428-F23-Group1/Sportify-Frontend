@@ -1,6 +1,9 @@
 import React from 'react';
+import { useRoute } from '@react-navigation/native';
 
-const IndividualChatScreen = ({ username }) => {
+const IndividualChatScreen = () => {
+  const route = useRoute();
+  const { username } = route.params;
   return (
     <div>
       <div className="top-banner">

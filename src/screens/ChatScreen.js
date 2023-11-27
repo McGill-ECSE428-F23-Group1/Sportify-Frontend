@@ -3,14 +3,16 @@ import { StyleSheet, View, ScrollView, FlatList, Text, TouchableOpacity, Image, 
 import { colors } from '../constants';
 import { getUser } from '../../features/steps/utils';
 import { useNavigation } from '@react-navigation/native';
-import exploreImage from '/src/components/navigation.png'; // Ensure correct path
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import exploreImage from '/src/components/navigation.png'; // Ensure correct path
 
 const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUsername
     const [friends, setFriends] = useState([]);
     const navigation = useNavigation();
 
-    useEffect(() => {
+    useEffect(() => {        
         const intervalId = setInterval(async () => {
             if (accountUsername !== '') {
                 try {
