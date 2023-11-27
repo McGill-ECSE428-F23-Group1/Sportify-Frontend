@@ -8,7 +8,7 @@ const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUserna
     const [friends, setFriends] = useState([]);
 
     useEffect(() => {
-        const fetchFriends = async () => {
+        const intervalId = setInterval(async () => {
             if (accountUsername !== '') {
                 try {
                     const response = await getUser(accountUsername);
@@ -25,9 +25,8 @@ const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUserna
                     console.error('Error fetching friends:', error);
                 }
             }
-        };
-
-        fetchFriends();
+        }, 500); // Fetch friends list every 0.5 seconds, in case they are updated after the user logs in
+        return () => clearInterval(intervalId); // Unmount the polling at teardown
     }, [accountUsername]);
     
     const onImageButtonPress = (username) => {
@@ -52,7 +51,7 @@ const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUserna
                                 <Text style={styles.boldText}>{item.username}</Text>
                             </View>
                             <View style={styles.card_button_container}>
-                                <TouchableOpacity onPress={() => onImageButtonPress(item.username)}>
+                                <TouchableOpacity id={`send-message-button-${item.username}`} onPress={() => onImageButtonPress(item.username)}>
                                     <Image source={exploreImage} style={styles.imageButton} />
                                 </TouchableOpacity>
                             </View>
@@ -92,10 +91,9 @@ const styles = StyleSheet.create({
     },
     card_button_container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'end',
+        justifyContent: 'end',
         marginRight: 0,
-        right: -150,
     },
     imageButton: {
         width: 32,

@@ -91,22 +91,22 @@ const UserScreen = ({route, navigation}) => {
 
             <View style={styles.bottom_bar}>
                 <View style={styles.bottom_bar_grid}>
-                    <TouchableOpacity style={styles.button} onPress={setStageToExplore}>
+                    <TouchableOpacity id='explore-tab' style={styles.button} onPress={setStageToExplore}>
                         <Text style={stage=="Explore"? styles.button_text_white: styles.button_text_black}>EXPLORE</Text>
                     </TouchableOpacity>
                 </View>    
                 <View style={styles.bottom_bar_grid}>
-                    <TouchableOpacity style={styles.button} onPress={setStageToFriends}>
+                    <TouchableOpacity id='friends-tab' style={styles.button} onPress={setStageToFriends}>
                         <Text style={stage=="Friends"? styles.button_text_white: styles.button_text_black}>FRIENDS</Text>
                     </TouchableOpacity>
                 </View>                  
                 <View style={styles.bottom_bar_grid}>
-                    <TouchableOpacity style={styles.button} onPress={setStageToChat}>
+                    <TouchableOpacity id='chat-tab' style={styles.button} onPress={setStageToChat}>
                         <Text style={stage=="Chat"? styles.button_text_white: styles.button_text_black}>CHAT</Text>
                     </TouchableOpacity>
                 </View>        
                 <View style={styles.bottom_bar_grid}>
-                    <TouchableOpacity style={styles.button} onPress={setStageToProfile}>
+                    <TouchableOpacity id='profile-tab' style={styles.button} onPress={setStageToProfile}>
                         <Text style={stage=="Profile"? styles.button_text_white: styles.button_text_black}>PROFILE</Text>
                     </TouchableOpacity>
                 </View>
