@@ -4,42 +4,52 @@ import { colors } from '../constants';
 import { getUser } from '../../features/steps/utils';
 import exploreImage from '/src/components/navigation.png'; // Ensure correct path
 
-const ChatScreen = () => {
-    const [allAccounts, setAllAccounts] = useState([]);
+const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUsername
+    const [friends, setFriends] = useState([]);
 
     useEffect(() => {
-        const getAllAccounts = async () => {
-            const response = await getUser("");
-            if (response.status >= 200 && response.status < 300) {
-                const response_json = await response.json();
-                setAllAccounts(response_json);
-            } else {
-                console.error('Error fetching accounts:', response.status);
+        const fetchFriends = async () => {
+            if (accountUsername !== '') {
+                try {
+                    const response = await getUser(accountUsername);
+                    if (response.status >= 200 && response.status < 300) {
+                        const user = await response.json();
+                        const friendProfiles = await Promise.all(
+                            user.friends.map(async username => await (await getUser(username)).json())
+                        );
+                        setFriends(friendProfiles);
+                    } else {
+                        console.error('Error fetching user details:', response.status);
+                    }
+                } catch (error) {
+                    console.error('Error fetching friends:', error);
+                }
             }
         };
-        getAllAccounts();
-    }, []);
 
+        fetchFriends();
+    }, [accountUsername]);
+    
     const onImageButtonPress = (username) => {
         console.log(`Image button pressed for user: ${username}`);
         Alert.alert(`Button pressed for user: ${username}`);
     };
 
-    const getCurrentDateTime = () => {
-        const now = new Date();
-        return now.toLocaleString(); // Formats date and time as a string
-    };
-
     return (
         <View style={styles.container}>
+            <View style={styles.topBanner}>
+                <Text style={styles.bannerText}>Send a Chat to a Friend</Text>
+            </View>
+
             <ScrollView style={styles.list_container}>
                 <FlatList
-                    data={allAccounts}
-                    keyExtractor={item => item.username}
+                    data={friends}  // Use friends as the data source
+                    keyExtractor={(item, index) => index.toString()}
+                    //keyExtractor={(item, index) => item.username + index}  // Combine username and index to ensure unique keys
                     renderItem={({ item }) => (
                         <View style={styles.list_card}>
                             <View style={styles.card_text}>
-                            <Text style={styles.boldText}>{item.username}</Text> {getCurrentDateTime()}
+                                <Text style={styles.boldText}>{item.username}</Text>
                             </View>
                             <View style={styles.card_button_container}>
                                 <TouchableOpacity onPress={() => onImageButtonPress(item.username)}>
@@ -51,7 +61,7 @@ const ChatScreen = () => {
                 />
             </ScrollView>
         </View>
-    );
+    );    
 };
 
 const styles = StyleSheet.create({
@@ -66,7 +76,7 @@ const styles = StyleSheet.create({
     },
     list_card: {
         width: '100%',
-        height: 85,
+        height: 70,
         backgroundColor: colors.blue,
         marginBottom: 10,
         flexDirection: 'row',
@@ -91,7 +101,17 @@ const styles = StyleSheet.create({
         width: 32,
         height: 32,
     },
+    topBanner: {
+        backgroundColor: colors.blue,
+        padding: 10,
+        alignItems: 'center',
+        marginBottom: 60,
+    },
+    bannerText: {
+        color: colors.black,
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
 });
 
 export default ChatScreen;
-    
