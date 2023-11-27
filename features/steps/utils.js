@@ -11,9 +11,8 @@ const updateBasicProfile = async (username, password, gender) =>
         password: password,
         gender: gender
     }), { method: 'PATCH' });
-const deleteUser = async username => {
-    await fetch(`${apiBaseUrl}/member/${username}`, { method: 'DELETE' })
-};
+const deleteUser = async username =>
+    await fetch(`${apiBaseUrl}/member/${username}`, { method: 'DELETE' });
 
 const addSportLevel = async (username, sport, level) =>
     await fetch(`${apiBaseUrl}/membersport/${username}?` + new URLSearchParams({
@@ -49,20 +48,24 @@ const acceptFriendRequest = async (id) =>
 const declineFriendRequest = async (id) =>
     await fetch(`${apiBaseUrl}/friendRequest/updateStatus/${id}?` + new URLSearchParams({ status: 'REJECTED' }), { method: 'PUT' });
 
-const createChat = async (username1, username2) => {
+const createChat = async (username1, username2) =>
     await fetch(`${apiBaseUrl}/chat?` + new URLSearchParams({
         member1Username: username1,
         member2Username: username2
     }), { method: 'POST' });
-}
 
-const createMessage = async (sender, receiver, content) => {
+const getChatBetweenMembers = async (username1, username2) =>
+    await fetch(`${apiBaseUrl}/chat?` + new URLSearchParams({
+        member1Username: username1,
+        member2Username: username2
+    }), { method: 'GET' });
+
+const createMessage = async (sender, receiver, content) =>
     await fetch(`${apiBaseUrl}/message?` + new URLSearchParams({
         senderUsername: sender,
         receiverUsername: receiver,
         description: content
     }), { method: 'POST' });
-}
 
 const getSportLevelPairsFromString = s =>
     s.split(",").map(sportLevelPairAsString => {
@@ -74,5 +77,5 @@ module.exports = {
     apiBaseUrl, frontendBaseUrl,
     createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, getSportLevelPairsFromString,
     addFriend, addFriendRequest, getFriendRequestsReceived, acceptFriendRequest, declineFriendRequest,
-    createChat, createMessage,
+    createChat, getChatBetweenMembers, createMessage,
 };

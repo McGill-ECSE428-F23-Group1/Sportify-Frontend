@@ -32,4 +32,4 @@ Then  the system should display messages <messages>
 Examples:
 | username1 | username2 | messages               |
 | Jimmy     | Krishna   | Jimmy:Hi,Krishna:Hello |
-| Mia       | Zeyuan    | Mia: llo,Zeyuan:Salut  |
+| Mia       | Zeyuan    | Mia:Hello,Zeyuan:Salut |
