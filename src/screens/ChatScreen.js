@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import exploreImage from '/src/components/navigation.png'; // Ensure correct path
 
-const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUsername
+const ChatScreen = ({ accountUsername, setFriendUsername, navigateToIndividualChat }) => { // Assuming you have accountUsername
     const [friends, setFriends] = useState([]);
     const navigation = useNavigation();
 
@@ -38,7 +38,8 @@ const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUserna
     const onImageButtonPress = (username) => {
         console.log(`Image button pressed for user: ${username}`);
         Alert.alert(`Button pressed for user: ${username}`);
-        navigation.navigate('IndividualChatScreen', { username: username });
+        setFriendUsername(username);
+        navigateToIndividualChat();
     };
 
     const getCurrentDateTime = () => {
