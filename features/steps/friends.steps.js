@@ -1,10 +1,14 @@
 const { Given, When, Then } = require("cucumber");
 const assert = require('assert');
 const { By, until } = require('selenium-webdriver');
-const { createUser, addFriend, addFriendRequest, deleteFriendRequestsWithUser, getUser } = require('./utils');
+const { createUser, addFriend, addFriendRequest, deleteFriendRequestsWithUser } = require('./utils');
 
 Given(/^the user is already friends with (.*)$/, async function (friend) {
     await addFriend('testuser', friend);
+});
+
+Given(/^(.*) is friend with (.*)$/, async function (username1, username2) {
+    await addFriend(username1, username2);
 });
 
 Given(/^(.*) has friends (.*)$/, async function (username, friendsCommaSeparated) {
@@ -34,18 +38,17 @@ Then(/^the user should see an error message indicating a pending friend request 
 
 Then(/^an error should appear indicating that (.*) is already a friend$/, async function (username) {
     await this.driver.wait(until.alertIsPresent());
-    // assert(await this.driver.switchTo().alert().getText() == `This person has already been your friend!`);
+    assert(await this.driver.switchTo().alert().getText() == `This person is already your friend!`);
     await this.driver.switchTo().alert().accept();
 });
 
 Given(/^there is an incoming friend request from user (.*)$/, async function (username) {
-    await deleteFriendRequestsWithUser('testuser');
     await addFriendRequest(username, 'testuser', 'Hello');
 });
 
 When(/^the user navigates to the friends page$/, async function () {
-    await this.driver.wait(until.elementLocated(By.xpath("//*[text()='FRIENDS' and not(ancestor::div[contains(@style,'display:none')]) and not(ancestor::div[contains(@style,'display: none')])]")))
-    const friendsButton = await this.driver.findElement(By.xpath("//*[text()='FRIENDS' and not(ancestor::div[contains(@style,'display:none')]) and not(ancestor::div[contains(@style,'display: none')])]"));
+    await this.driver.wait(until.elementLocated(By.id('friends-tab')))
+    const friendsButton = await this.driver.findElement(By.id('friends-tab'));
     await this.driver.executeScript('arguments[0].click();', friendsButton);
     await this.driver.wait(until.elementLocated(By.xpath("//*[text()='My FRIENDS' and not(ancestor::div[contains(@style,'display:none')]) and not(ancestor::div[contains(@style,'display: none')])]")))
 });

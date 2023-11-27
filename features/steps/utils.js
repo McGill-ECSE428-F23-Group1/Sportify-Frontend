@@ -12,9 +12,6 @@ const updateBasicProfile = async (username, password, gender) =>
         gender: gender
     }), { method: 'PATCH' });
 const deleteUser = async username => {
-    if ((await getUser(username)).status == 200) {
-        await deleteFriendRequestsWithUser(username);
-    }
     await fetch(`${apiBaseUrl}/member/${username}`, { method: 'DELETE' })
 };
 
@@ -52,22 +49,19 @@ const acceptFriendRequest = async (id) =>
 const declineFriendRequest = async (id) =>
     await fetch(`${apiBaseUrl}/friendRequest/updateStatus/${id}?` + new URLSearchParams({ status: 'REJECTED' }), { method: 'PUT' });
 
-const deleteFriendRequest = async (id) =>
-    await fetch(`${apiBaseUrl}/friendRequest/${id}`, { method: 'DELETE' });
-    
-const deleteFriendRequestsWithUser = async (username) => {
-    await Promise.all(
-        ( await
-            fetch(`${apiBaseUrl}/friendRequest/sender/${username}`, { method: 'GET' })
-            .then(response => response.json())
-        ).map(async request => await deleteFriendRequest(request.id))
-    );
-    await Promise.all(
-        ( await 
-            fetch(`${apiBaseUrl}/friendRequest/receiver/${username}`, { method: 'GET' })
-            .then(response => response.json())
-        ).map(async request => await deleteFriendRequest(request.id))
-    )
+const createChat = async (username1, username2) => {
+    await fetch(`${apiBaseUrl}/chat?` + new URLSearchParams({
+        member1Username: username1,
+        member2Username: username2
+    }), { method: 'POST' });
+}
+
+const createMessage = async (sender, receiver, content) => {
+    await fetch(`${apiBaseUrl}/message?` + new URLSearchParams({
+        senderUsername: sender,
+        receiverUsername: receiver,
+        description: content
+    }), { method: 'POST' });
 }
 
 const getSportLevelPairsFromString = s =>
@@ -79,5 +73,6 @@ const getSportLevelPairsFromString = s =>
 module.exports = {
     apiBaseUrl, frontendBaseUrl,
     createUser, updateBasicProfile, getUser, deleteUser, addSportLevel, updateSportLevel, getSportLevelPairsFromString,
-    addFriend, addFriendRequest, getFriendRequestsReceived, acceptFriendRequest, declineFriendRequest, deleteFriendRequestsWithUser
+    addFriend, addFriendRequest, getFriendRequestsReceived, acceptFriendRequest, declineFriendRequest,
+    createChat, createMessage,
 };
