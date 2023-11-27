@@ -91,10 +91,9 @@ const styles = StyleSheet.create({
     },
     card_button_container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'end',
+        justifyContent: 'end',
         marginRight: 0,
-        right: -150,
     },
     imageButton: {
         width: 32,
