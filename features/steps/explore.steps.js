@@ -17,8 +17,8 @@ When(/^the user enters the explore page$/, async function () {
     await this.driver.findElement(By.id('password-text-input')).sendKeys('12345678');
     const loginButton = await this.driver.findElement(By.id('login-button'));
     await this.driver.executeScript('arguments[0].click();', loginButton);
-    await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'EXPLORE')]")));
-    const exploreButton = await this.driver.findElement(By.xpath("//*[contains(text(), 'EXPLORE')]"));
+    await this.driver.wait(until.elementLocated(By.id('explore-tab')));
+    const exploreButton = await this.driver.findElement(By.id('explore-tab'));
     await this.driver.executeScript('arguments[0].click();', exploreButton);
 });
 

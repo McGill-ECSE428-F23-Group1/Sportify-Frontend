@@ -28,8 +28,8 @@ Given(/^the users (.*) and (.*) have messages (.*)$/, async function (username1,
 });
 
 When(/^the user enters the chats page$/, async function () {
-    await this.driver.wait(until.elementLocated(By.xpath("//*[text()='CHAT']")))
-    const chatsButton = await this.driver.findElement(By.xpath("//*[text()='CHAT']"));
+    await this.driver.wait(until.elementLocated(By.id('chat-tab')))
+    const chatsButton = await this.driver.findElement(By.id('chat-tab'));
     await this.driver.executeScript('arguments[0].click();', chatsButton);
 });
 
@@ -40,8 +40,8 @@ Then(/^the user should be able to see the list of chat channels with (.*) respec
 });
 
 Given(/^the user is at the chat page with (.*)$/, async function (username) {
-    await this.driver.wait(until.elementLocated(By.xpath("//*[text()='CHAT']")));
-    const chatsButton = await this.driver.findElement(By.xpath("//*[text()='CHAT']"));
+    await this.driver.wait(until.elementLocated(By.id('chat-tab')))
+    const chatsButton = await this.driver.findElement(By.id('chat-tab'));
     await this.driver.executeScript('arguments[0].click();', chatsButton);
     // TODO
 });
@@ -59,7 +59,7 @@ Then(/^the user should be able to see the message (.*) at the chat page$/, async
 });
 
 Then(/^the user (.*) should be able to see the message (.*) at the chat page with (.*)$/, async function (username, message, username2) {
-    const profileButton = await this.driver.findElement(By.xpath("//*[text()='PROFILE']"));
+    const profileButton = await this.driver.findElement(By.id('profile-tab'));
     await this.driver.executeScript('arguments[0].click();', profileButton);
     await this.driver.wait(until.elementLocated(By.xpath("//*[text()='Logout']")));
     const logoutButton = await this.driver.findElement(By.xpath("//*[text()='Logout']"));
@@ -75,8 +75,8 @@ Then(/^the user (.*) should be able to see the message (.*) at the chat page wit
     await this.driver.executeScript('arguments[0].click();', loginButton);
     await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'EXPLORE')]")));
 
-    await this.driver.wait(until.elementLocated(By.xpath("//*[text()='CHAT']")));
-    const chatsButton = await this.driver.findElement(By.xpath("//*[text()='CHAT']"));
+    await this.driver.wait(until.elementLocated(By.id('chat-tab')));
+    const chatsButton = await this.driver.findElement(By.id('chat-tab'));
     await this.driver.executeScript('arguments[0].click();', chatsButton);
 
     // TODO

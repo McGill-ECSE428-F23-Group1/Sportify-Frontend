@@ -43,8 +43,8 @@ Given(/^there is an incoming friend request from user (.*)$/, async function (us
 });
 
 When(/^the user navigates to the friends page$/, async function () {
-    await this.driver.wait(until.elementLocated(By.xpath("//*[text()='FRIENDS' and not(ancestor::div[contains(@style,'display:none')]) and not(ancestor::div[contains(@style,'display: none')])]")))
-    const friendsButton = await this.driver.findElement(By.xpath("//*[text()='FRIENDS' and not(ancestor::div[contains(@style,'display:none')]) and not(ancestor::div[contains(@style,'display: none')])]"));
+    await this.driver.wait(until.elementLocated(By.id('friends-tab')))
+    const friendsButton = await this.driver.findElement(By.id('friends-tab'));
     await this.driver.executeScript('arguments[0].click();', friendsButton);
     await this.driver.wait(until.elementLocated(By.xpath("//*[text()='My FRIENDS' and not(ancestor::div[contains(@style,'display:none')]) and not(ancestor::div[contains(@style,'display: none')])]")))
 });

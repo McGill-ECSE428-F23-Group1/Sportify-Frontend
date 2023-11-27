@@ -4,7 +4,8 @@ const { By, until } = require('selenium-webdriver');
 const { frontendBaseUrl, createUser, getUser, updateBasicProfile, deleteUser, addSportLevel, getSportLevelPairsFromString } = require('./utils');
 
 Given(/^the user is at the profile page$/, async function () {
-    let profileButton = await this.driver.wait(until.elementLocated(By.xpath("//*[contains(text(), 'PROFILE')]")));
+    await this.driver.wait(until.elementLocated(By.id('profile-tab')));
+    const profileButton = await this.driver.findElement(By.id('profile-tab'));
     await this.driver.executeScript('arguments[0].click();', profileButton);
 })
 
