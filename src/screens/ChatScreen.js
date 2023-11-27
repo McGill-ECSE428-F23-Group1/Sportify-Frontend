@@ -8,7 +8,7 @@ const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUserna
     const [friends, setFriends] = useState([]);
 
     useEffect(() => {
-        const fetchFriends = async () => {
+        const intervalId = setInterval(async () => {
             if (accountUsername !== '') {
                 try {
                     const response = await getUser(accountUsername);
@@ -25,9 +25,8 @@ const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUserna
                     console.error('Error fetching friends:', error);
                 }
             }
-        };
-
-        fetchFriends();
+        }, 500); // Fetch friends list every 0.5 seconds, in case they are updated after the user logs in
+        return () => clearInterval(intervalId); // Unmount the polling at teardown
     }, [accountUsername]);
     
     const onImageButtonPress = (username) => {
