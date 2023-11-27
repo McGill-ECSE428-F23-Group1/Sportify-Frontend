@@ -11,19 +11,31 @@ import FriendsScreen from './src/screens/FriendsScreen';
 import ExploreScreen from './src/screens/ExploreScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import UserScreen from './src/screens/UserScreen';
+import IndividualChatScreen from './src/screens/IndividualChatScreen';
+
 
 
 export default function App() {
 
     const OnBoardingStack = createNativeStackNavigator();
     const BottomTabs = createBottomTabNavigator();
+    const ChatStack = createNativeStackNavigator();
+
+    const ChatStackScreen = () => {
+        return (
+            <ChatStack.Navigator>
+                <ChatStack.Screen name="ChatList" component={ChatScreen} />
+                <ChatStack.Screen name="IndividualChatScreen" component={IndividualChatScreen} />
+            </ChatStack.Navigator>
+        );
+    };
 
     const UserScreens=()=>{
         return (
           <BottomTabs.Navigator initialRouteName="Explore">
             <BottomTabs.Screen name="Explore" component={ExploreScreen}/>
             <BottomTabs.Screen name="Friends" component={FriendsScreen} />
-            <BottomTabs.Screen name="Chat" component={ChatScreen} />
+            <BottomTabs.Screen name="Chat" component={ChatStackScreen} />
             <BottomTabs.Screen name="Profile" component={MainProfile} />
           </BottomTabs.Navigator>
         );

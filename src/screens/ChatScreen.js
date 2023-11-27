@@ -3,11 +3,12 @@ import { StyleSheet, View, ScrollView, FlatList, Text, TouchableOpacity, Image, 
 import { colors } from '../constants';
 import { getUser } from '../../features/steps/utils';
 import { useNavigation } from '@react-navigation/native';
-
 import exploreImage from '/src/components/navigation.png'; // Ensure correct path
+
 
 const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUsername
     const [friends, setFriends] = useState([]);
+    const navigation = useNavigation();
 
     useEffect(() => {
         const intervalId = setInterval(async () => {
@@ -35,14 +36,12 @@ const ChatScreen = ({ accountUsername }) => { // Assuming you have accountUserna
     const onImageButtonPress = (username) => {
         console.log(`Image button pressed for user: ${username}`);
         Alert.alert(`Button pressed for user: ${username}`);
+        navigation.navigate('IndividualChatScreen', { username: username });
     };
 
     const getCurrentDateTime = () => {
         const now = new Date();
         return now.toLocaleString(); // Formats date and time as a string
-    };
-    const pressChat = (username) => {
-        navigation.navigate('IndividualChatScreen', { username });
     };
 
     return (
