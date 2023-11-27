@@ -4,6 +4,8 @@ import { colors } from '../constants';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AppButton from '../components/AppButton';
 import { getUser } from '../../features/steps/utils';
+import { useNavigation } from '@react-navigation/native';
+
 import exploreImage from '/src/components/navigation.png'; // Ensure correct path
 
 const ChatScreen = () => {
@@ -22,6 +24,9 @@ const ChatScreen = () => {
         getAllAccounts();
     }, []);
 
+    const navigation = useNavigation();
+
+
     const onImageButtonPress = (username) => {
         console.log(`Image button pressed for user: ${username}`);
         Alert.alert(`Button pressed for user: ${username}`);
@@ -30,6 +35,9 @@ const ChatScreen = () => {
     const getCurrentDateTime = () => {
         const now = new Date();
         return now.toLocaleString(); // Formats date and time as a string
+    };
+    const pressChat = (username) => {
+        navigation.navigate('IndividualChatScreen', { username });
     };
 
     return (
