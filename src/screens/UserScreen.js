@@ -80,7 +80,11 @@ const UserScreen = ({ route, navigation }) => {
                 />
             </View>
             <View style={{ flex: 1, marginBottom: 36, display: stage == "Friends" ? "flex" : "none" }} >
-                <FriendsScreen accountUsername={username} />
+                <FriendsScreen 
+                accountUsername={username}
+                setFriendUsername={setChatFriendUsername}
+                navigateToIndividualChat={setStageToIndividualChat}
+                 />
             </View>
             <View style={{ flex: 1, marginBottom: 36, display: stage == "Chat" ? "flex" : "none" }} >
                 <ChatScreen

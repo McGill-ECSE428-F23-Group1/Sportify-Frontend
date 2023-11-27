@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors, fonts } from '../constants';
-import AppButton from '../components/AppButton';
 import { createUser, getUser, deleteUser, getFriendRequestsReceived, acceptFriendRequest, addFriend, declineFriendRequest } from '../../features/steps/utils';
 
 
-const FriendScreen = ({ accountUsername }) => {
+const FriendScreen = ({ accountUsername, setFriendUsername, navigateToIndividualChat }) => {
     const [friendRequests, setFriendRequests] = useState([]);
     const [searchBarText, onChangeSearchBarText] = useState("");
     const [searchText, setSearchText] = useState("");
@@ -37,6 +36,12 @@ const FriendScreen = ({ accountUsername }) => {
         return () => clearInterval(intervalId); // Unmount the polling at teardown
     }, [accountUsername]);
 
+    const onImageButtonPress = (username) => {
+        console.log(`Image button pressed for user: ${username}`);
+        Alert.alert(`Button pressed for user: ${username}`);
+        setFriendUsername(username);
+        navigateToIndividualChat();
+    };
 
     return (
         <View style={styles.container}>
@@ -118,7 +123,7 @@ const FriendScreen = ({ accountUsername }) => {
                                 </View>
                                 <View style={[styles.card_buttons]}>
                                     <View style={styles.card_button_container}>
-                                        <TouchableOpacity style={styles.card_button} onPress={() => pressChat(item.username)}>
+                                        <TouchableOpacity style={styles.card_button} onPress={() => onImageButtonPress(item.username)}>
                                             <MaterialCommunityIcons name={"message-processing-outline"} size={25} />
                                         </TouchableOpacity>
                                     </View>
@@ -254,13 +259,21 @@ const styles = StyleSheet.create({
     },
     list_card: {
         backgroundColor: colors.blue,
-        borderRadius: 8,
-        padding: 10,
+        borderRadius: 10,
+        padding: 15,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 10,
         marginHorizontal: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     list_container: {
         flex: 1,

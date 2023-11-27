@@ -2,17 +2,13 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, FlatList, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { colors } from '../constants';
 import { getUser } from '../../features/steps/utils';
-import { useNavigation } from '@react-navigation/native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import exploreImage from '/src/components/navigation.png'; // Ensure correct path
 
 const ChatScreen = ({ accountUsername, setFriendUsername, navigateToIndividualChat }) => { // Assuming you have accountUsername
     const [friends, setFriends] = useState([]);
-    const navigation = useNavigation();
 
-    useEffect(() => {        
+    useEffect(() => {
         const intervalId = setInterval(async () => {
             if (accountUsername !== '') {
                 try {
@@ -34,7 +30,7 @@ const ChatScreen = ({ accountUsername, setFriendUsername, navigateToIndividualCh
         }, 500); // Fetch friends list every 0.5 seconds, in case they are updated after the user logs in
         return () => clearInterval(intervalId); // Unmount the polling at teardown
     }, [accountUsername]);
-    
+
     const onImageButtonPress = (username) => {
         console.log(`Image button pressed for user: ${username}`);
         Alert.alert(`Button pressed for user: ${username}`);
@@ -50,63 +46,84 @@ const ChatScreen = ({ accountUsername, setFriendUsername, navigateToIndividualCh
     return (
         <View style={styles.container}>
             <View style={styles.topBanner}>
-                <Text style={styles.bannerText}>Send a Chat to a Friend</Text>
+                <Text style={styles.bannerText}>SEND CHAT TO FRIENDS</Text>
             </View>
 
             <ScrollView style={styles.list_container}>
                 <FlatList
-                    data={friends}  // Use friends as the data source
+                    data={friends}  // TODO: Only friends with chat history should be displayed
                     keyExtractor={(item, index) => index.toString()}
                     //keyExtractor={(item, index) => item.username + index}  // Combine username and index to ensure unique keys
                     renderItem={({ item }) => (
-                        <View style={styles.list_card}>
+                        <TouchableOpacity style={styles.list_card}>
                             <View style={styles.card_text}>
                                 <Text style={styles.boldText}>{item.username}</Text>
                             </View>
-                            <View style={styles.card_button_container}>
-                                <TouchableOpacity id={`send-message-button-${item.username}`} onPress={() => onImageButtonPress(item.username)}>
-                                    <Image source={exploreImage} style={styles.imageButton} />
-                                </TouchableOpacity>
+                            <View style={[styles.card_buttons]}>
+                                <View style={styles.card_button_container}>
+                                    <TouchableOpacity style={styles.card_button} onPress={() => onImageButtonPress(item.username)}>
+                                        <MaterialCommunityIcons name={"message-processing-outline"} size={25} />                                </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     )}
                 />
             </ScrollView>
         </View>
-    );    
+    );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.light_blue,
-        margin: 20,
         flexDirection: 'column',
     },
     list_container: {
         flex: 1,
     },
     list_card: {
-        width: '100%',
-        height: 70,
         backgroundColor: colors.blue,
-        marginBottom: 10,
+        borderRadius: 10,
+        padding: 15,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 11,
+        marginBottom: 10,
+        marginHorizontal: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     card_text: {
         flex: 4,
     },
     boldText: {
         fontWeight: 'bold',
+        fontSize: 18,
+    },
+    card_buttons: {
+        flexDirection: "row",
+        alignItems: 'center',
     },
     card_button_container: {
         flex: 1,
-        alignItems: 'end',
-        justifyContent: 'end',
-        marginRight: 0,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    card_button: {
+        width: 32,
+        height: 32,
+        borderRadius: 18,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.white,
+        marginHorizontal: 10,
     },
     imageButton: {
         width: 32,
