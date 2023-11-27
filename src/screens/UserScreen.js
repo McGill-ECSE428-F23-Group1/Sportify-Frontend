@@ -18,6 +18,7 @@ import { getUser } from '../../features/steps/utils';
 const UserScreen = ({ route, navigation }) => {
 
     const [username, setUsername] = useState('');
+    const [chatFriendUsername, setChatFriendUsername] = useState('');
     const [password, setPassword] = useState('');
     const [gender, setGender] = useState('');
     const [email, setEmail] = useState('');
@@ -82,10 +83,14 @@ const UserScreen = ({ route, navigation }) => {
                 <FriendsScreen accountUsername={username} />
             </View>
             <View style={{ flex: 1, marginBottom: 36, display: stage == "Chat" ? "flex" : "none" }} >
-                <ChatScreen accountUsername={username} />
+                <ChatScreen
+                    accountUsername={username}
+                    setFriendUsername={setChatFriendUsername}
+                    navigateToIndividualChat={setStageToIndividualChat}
+                />
             </View>
             <View style={{ flex: 1, marginBottom: 36, display: stage == "IndividualChat" ? "flex" : "none" }} >
-                <IndividualChatScreen accountUsername={username} />
+                <IndividualChatScreen accountUsername={username} friendUsername={chatFriendUsername} />
             </View>
             <View style={{ flex: 1, marginBottom: 36, display: stage == "Profile" ? "flex" : "none" }} >
                 <MainProfile
@@ -110,13 +115,8 @@ const UserScreen = ({ route, navigation }) => {
                 </View>
                 <View style={styles.bottom_bar_grid}>
                     <TouchableOpacity id='chat-tab' style={styles.button} onPress={setStageToChat}>
-                        <Text style={stage == "Chat" ? styles.button_text_white : styles.button_text_black}>CHAT</Text>
+                        <Text style={stage == "Chat" || stage == "IndividualChat" ? styles.button_text_white : styles.button_text_black}>CHAT</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.bottom_bar_grid}>
-                <TouchableOpacity id='individual-chat-tab' style={styles.button} onPress={setStageToIndividualChat}>
-                    <Text style={stage=="IndividualChat"? styles.button_text_white: styles.button_text_black}>CHAT</Text>
-                </TouchableOpacity>
                 </View>
                 <View style={styles.bottom_bar_grid}>
                     <TouchableOpacity id='profile-tab' style={styles.button} onPress={setStageToProfile}>
