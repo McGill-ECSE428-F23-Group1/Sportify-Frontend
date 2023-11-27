@@ -9,7 +9,7 @@ import { getMessages, createMessage} from '../../features/steps/utils';
 const IndividualChatScreen = ({ accountUsername, friendUsername }) => {
   const [messageText, setMessageText] = useState('');
   const [messages, setMessages] = useState([]);
-  
+
   useEffect(() => {
     getAllMessages();
   }, [friendUsername]);
@@ -59,10 +59,11 @@ const IndividualChatScreen = ({ accountUsername, friendUsername }) => {
         <Text style={styles.bannerText}>{friendUsername}</Text>
       </View>
       <FlatList
-        data={messages}
+        data={messages.reverse()}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderMessage}
         style={styles.messagesList}
+        inverted={true}
       />
       <View style={styles.inputContainer}>
         <TextInput
