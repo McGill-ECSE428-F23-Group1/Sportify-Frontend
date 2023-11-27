@@ -79,6 +79,10 @@ Then(/^the user (.*) should be able to see the message (.*) at the chat page wit
     const chatsButton = await this.driver.findElement(By.id('chat-tab'));
     await this.driver.executeScript('arguments[0].click();', chatsButton);
 
+    await this.driver.wait(until.elementLocated(By.id(`send-message-button-${username2}`)));
+    const messageButton = await this.driver.findElement(By.id(`send-message-button-${username2}`));
+    await this.driver.executeScript('arguments[0].click();', messageButton);
+
     // TODO
 });
 
