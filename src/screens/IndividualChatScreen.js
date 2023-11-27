@@ -3,16 +3,16 @@ import { useRoute } from '@react-navigation/native';
 import { colors, fonts } from '../constants';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
+
 const IndividualChatScreen = () => {
   const route = useRoute();
-  const username = 'Homelander';
+  const {username} = route.params;
   return (
     <View style={styles.container}>
       <View style={styles.topBanner}>
         <Text style={styles.bannerText}>{username}</Text>
       </View>
     </View>
-
 
   );
 };
