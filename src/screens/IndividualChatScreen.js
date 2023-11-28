@@ -67,6 +67,7 @@ const IndividualChatScreen = ({ accountUsername, friendUsername }) => {
       />
       <View style={styles.inputContainer}>
         <TextInput
+          id='message-input'
           style={styles.textInput}
           value={messageText}
           onChangeText={setMessageText}
@@ -74,7 +75,7 @@ const IndividualChatScreen = ({ accountUsername, friendUsername }) => {
           onSubmitEditing={sendMessage}
           returnKeyType="send"
         />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+        <TouchableOpacity id='send-button' style={styles.sendButton} onPress={sendMessage}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </View>

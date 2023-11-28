@@ -61,7 +61,7 @@ const ChatScreen = ({ accountUsername, setFriendUsername, navigateToIndividualCh
                             </View>
                             <View style={[styles.card_buttons]}>
                                 <View style={styles.card_button_container}>
-                                    <TouchableOpacity style={styles.card_button} onPress={() => onImageButtonPress(item.username)}>
+                                    <TouchableOpacity id={`message-button-${item.username}`} style={styles.card_button} onPress={() => onImageButtonPress(item.username)}>
                                         <MaterialCommunityIcons name={"message-processing-outline"} size={25} />                                </TouchableOpacity>
                                 </View>
                             </View>
