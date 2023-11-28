@@ -2,7 +2,8 @@
 
 ## Prequisites
 1. Install Node.js on your computer
-2. Download Expo Go on your phone
+2. Download Expo Go on your phone (if you wish to run the application on your phone)
+3. Install chromedriver version 119 (for the automated acceptance tests only)
 
 ## Setup
 1. Clone the current repository Sportify-Frontend
@@ -23,9 +24,9 @@
 
 ## Acceptance Testing with Cucumber
 
-1. Run the backend
+1. Run the [backend](https://github.com/McGill-ECSE428-F23-Group1/Sportify-Backend)
 2. Run the frontend: `npm start`
-3. Run `npm test`
+3. With both the backend and the frontend running in the background, run `npm test`
 
 ## Useful Resources
 React Native: How to create a new project https://reactnative.dev/docs/environment-setup?guide=quickstart 
