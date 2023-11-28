@@ -4,20 +4,44 @@ import { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { colors, fonts } from '../constants';
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-
+import { getMessages, createMessage} from '../../features/steps/utils';
 
 const IndividualChatScreen = ({ accountUsername, friendUsername }) => {
   const [messageText, setMessageText] = useState('');
-  const [messages, setMessages] = useState([
-    // Mock messages
-    { id: 1, text: 'Hello!', isSentByUser: false },
-    { id: 2, text: 'How are you?', isSentByUser: false },
-    // id is Date.now()
-  ]);
+  const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    getAllMessages();
+  }, [friendUsername]);
+
+  useEffect(() => {
+    getAllMessages();
+  }, [accountUsername]);
+
+  const getAllMessages = async () => {
+    try {
+      const response = await getMessages(accountUsername, friendUsername);
+      const response_json = await response.json();
+      const allMessages = response_json.messages;
+
+      var message_array=[];
+      allMessages.forEach(message => {
+        if(message.messageSender.username==friendUsername){
+          message_array.push({ id: message.date, text: message.description, isSentByUser: false });
+        }else{
+          message_array.push({ id: message.date, text: message.description, isSentByUser: true });
+        }
+        setMessages(message_array);
+      });
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+    }
+  };
+
   const sendMessage = () => {
-    console.log(messageText);
     if (messageText.trim() !== '') {
       setMessages([...messages, { id: Date.now(), text: messageText, isSentByUser: true }]);
+      createMessage(accountUsername, friendUsername, messageText);
       setMessageText('');
     }
   };
@@ -35,10 +59,11 @@ const IndividualChatScreen = ({ accountUsername, friendUsername }) => {
         <Text style={styles.bannerText}>{friendUsername}</Text>
       </View>
       <FlatList
-        data={messages}
+        data={messages.reverse()}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderMessage}
         style={styles.messagesList}
+        inverted={true}
       />
       <View style={styles.inputContainer}>
         <TextInput
